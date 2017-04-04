@@ -11,11 +11,13 @@ using namespace std;
 
 class xmlparser {
 	private :
-		TiXmlDocument docNNetwork
+		TiXmlDocument docNNetwork;
 	
 	public : 
 		xmlpaser(string xmlfile);
 
-		//NNetwork
+		NNetwork readNNetwork();
+		saveNetwork(string xmlfilename);
+}
 
 #endif
