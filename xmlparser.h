@@ -11,7 +11,7 @@ using namespace std;
 
 class xmlparser {
 	private :
-		TiXmlDocument docNNetwork
+		TiXmlDocument docNNetwork;
 	
 	public : 
 		xmlpaser(string xmlfile);
