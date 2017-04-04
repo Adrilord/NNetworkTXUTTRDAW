@@ -5,7 +5,7 @@
 #include <iostream>
 #include <tinyxml.h>
 #include "NNetwork.h"
-#include "
+#include "Layer.h"
 
 using namespace std;
 
@@ -14,7 +14,8 @@ class xmlparser {
 		TiXmlDocument docNNetwork
 	
 	public : 
-		
-		NNetwork
+		xmlpaser(string xmlfile);
+
+		//NNetwork
 
 #endif
