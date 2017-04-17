@@ -2,12 +2,13 @@
 #include <string>
 
 
-Layer::Layer(int& nben, int& nbout, gsl_matrix* weights, gsl_vector* bias, vector<string> functions) {
+Layer::Layer(int& nben, int& nbout, gsl_matrix* weights, gsl_vector* bias, vector<int>& functionsID, vector<vector<double>>& functionsParam) {
 	this->nben=nben;
 	this->nbout=nbout;
 	this->weights=weights;
 	this->bias=bias;
-	this->functions=functions;
+	this->functionsID=functionsID;
+	this->functionsParam=functionsParam;
 }
 
 Layer::Layer(int& nben, int& nbout, gsl_matrix* weights, gsl_vector* bias) { //with sigmoïd functions
@@ -16,7 +17,7 @@ Layer::Layer(int& nben, int& nbout, gsl_matrix* weights, gsl_vector* bias) { //w
 	this->weights=weights;
 	this->bias=bias;
 	for(int i=0; i<nbout; i++) {
-		this->functions.push_back("sigmoid");
+		this->functionsID.push_back(SIGMOID);
 	}
 }
 
@@ -38,7 +39,7 @@ Layer::Layer(int& nben, int& nbout) { // for input layer
 		gsl_vector_set (this->bias, i, 0);
 	}
 	for(int i=0; i<nbout; i++) {
-		this->functions.push_back("identity");
+		this->functionsID.push_back(ID);
 	}
 }
 
@@ -66,10 +67,10 @@ gsl_vector* Layer::calculOuput(gsl_vector* preOutput) {
     return out;
 }
 
-double Layer::calculFromFunction(string function, double z) {
-	if(function == "sigmoid") {
+double Layer::calculFromFunction(int functionID, vector<double>& functionsParam, double z) {
+	if(functionID == SIGMOID) {
 		return 1.f /(1+gsl_sf_exp(-z));
-	} else if (function == "identity") {
+	} else if (functionID == ID) {
 		return z;
 	} else {
 		return z;

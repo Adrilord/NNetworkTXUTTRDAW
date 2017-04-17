@@ -2,22 +2,26 @@
 #define XMLPARSER
 
 #include <string>
+#include <vector>
 #include <iostream>
 #include <tinyxml.h>
 #include "NNetwork.h"
 #include "Layer.h"
+#include "xmlspec.h"
 
 using namespace std;
 
-class xmlparser {
-	private :
-		TiXmlDocument docNNetwork;
-	
-	public : 
-		xmlpaser(string xmlfile);
+NNetwork xmlToNNetwork(string xmlfilename);
 
-		NNetwork readNNetwork();
-		saveNetwork(string xmlfilename);
-}
+Layer xmlToLayer(TiXmlElement* layerElement);
+
+vector<int> decodeListOfInt(char* values);
+
+void saveNetwork(NNetwork& network, string xmlfilename);
+
+char* codeListOfInt(vector<int>& listOfInt) {
+
+
+
 
 #endif
