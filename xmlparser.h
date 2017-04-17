@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <iterator>
+#include <sstream>
 #include <iostream>
 #include <tinyxml.h>
 #include "NNetwork.h"
@@ -13,13 +15,13 @@ using namespace std;
 
 NNetwork xmlToNNetwork(string xmlfilename);
 
-Layer xmlToLayer(TiXmlElement* layerElement);
+Layer xmlToLayer(TiXmlElement* firstNeuronElem, int& nben, int& layerTypeID, int& nbout);
 
-vector<int> decodeListOfInt(char* values);
+vector<double> decodeListOfDouble(string values);
 
 void saveNetwork(NNetwork& network, string xmlfilename);
 
-char* codeListOfInt(vector<int>& listOfInt) {
+char* codeListOfDouble(vector<double>& listOfDouble);
 
 
 

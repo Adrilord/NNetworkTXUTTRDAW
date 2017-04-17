@@ -21,11 +21,11 @@ class NNetwork {
 		
 		~NNetwork();
 		
-		gsl_vector* calculOuput(gsl_vector* input);
-		gsl_matrix* calculOuput(gsl_matrix* input);
+		vector<double> calculOuput(vector<double> input);
+		vector<vector<double>> calculOuput(vector<vector<double>> input);
 		
-		//~ NNetwork trainNNetwork(gsl_vector* input);
-		//~ NNetwork trainNNetwork(gsl_matrix* input);
+		//~ NNetwork trainNNetwork(vector<double> input);
+		//~ NNetwork trainNNetwork(vector<double> input);
 };
 
 #endif

@@ -4,6 +4,10 @@ NNetwork::NNetwork(vector<Layer> Layers) {
 	this->Layers = Layers;
 }
 
+NNetwork::~NNetwork() {
+	
+}
+
 gsl_vector* NNetwork::calculOuput(gsl_vector* input) {
 	gsl_vector* out = input;
 	vector<Layer>::iterator i;
