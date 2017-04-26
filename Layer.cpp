@@ -44,7 +44,7 @@ Layer::Layer(int& nben, int& nbout)
 	}
 }
 
-Layer::~Layer() 
+void Layer::freeSpace()
 {
 	gsl_vector_free(this->bias);
 	gsl_matrix_free(this->weights);
@@ -106,7 +106,7 @@ gsl_matrix* Layer::stdToGslMatrix(vector<vector<double>>& stdMatrix)
 }
 
 
-vector<double> Layer::gslVectorToStd(gsl_vector* gslvector)
+vector<double> Layer::gslToStdVector(gsl_vector* gslvector)
 {
 	vector<double> stdVector;
 	for(unsigned int i=0; i<gslvector->size; i++) {
@@ -116,7 +116,7 @@ vector<double> Layer::gslVectorToStd(gsl_vector* gslvector)
 }
 
 
-vector<vector<double>> Layer::gslMatrixToStd(gsl_matrix* gslmatrix)
+vector<vector<double>> Layer::gslToStdMatrix(gsl_matrix* gslmatrix)
 {
 	vector<vector<double>> stdMatrix;
 	for(unsigned int j=0; j<gslmatrix->size1; j++) {

@@ -1,4 +1,4 @@
-DEBUGMODE = $1 # --debug optionel
+DEBUGMODE = -g # --debug optionel
 
 main: Layer.o NNetwork.o xmlparser.o
 	g++ -Wall $(DEBUGMODE) -I/usr/local/include -c main.cpp

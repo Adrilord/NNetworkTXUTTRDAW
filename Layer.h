@@ -26,19 +26,19 @@ class Layer {
 		Layer(int& nben, int& nbout, vector<vector<double>>& weights, vector<double>& bias); //with sigmoïd functions
 		Layer(int& nben, int& nbout); // for input layer
 		
-		~Layer();
+		void freeSpace(); //A utiliser manuellement plutôt que d'avoir un destructeur (cela pose des problèmes)
 
 		void calculPreOutput(gsl_vector* en, gsl_vector* preOutput);
 		void calculOuput(gsl_vector* preOutput, gsl_vector* output);
-		void calculDelta(gsl_vector* en, gsl_vector* delta, Layer nextLayer);
+		void calculDelta(gsl_vector* en, gsl_vector* delta, Layer nextLayer); //backward propagation
 		
 		double calculFromFunction(int neuron, double& z);
 		
 		gsl_vector* stdToGslVector(vector<double>& stdVector);
 		gsl_matrix* stdToGslMatrix(vector<vector<double>>& stdMatrix);
 		
-		vector<double> gslVectorToStd(gsl_vector* gslvector);
-		vector<vector<double>> gslMatrixToStd(gsl_matrix* gslmatrix);
+		vector<double> gslToStdVector(gsl_vector* gslvector);
+		vector<vector<double>> gslToStdMatrix(gsl_matrix* gslmatrix);
 		
 		int getNbEn();
 		int getNbOut();

@@ -29,7 +29,7 @@ NNetwork xmlToNNetwork(string xmlfilename) {
 
 	//Remplissage du NNetwork
 	while (layerElem) {
-		//Onrécupère les informations du layer
+		//On récupère les informations du layer
 		layerElem->QueryIntAttribute("nbneurons", &nbout);
 		layerElem->QueryIntAttribute("typeid", &layerTypeID);
 		
@@ -41,26 +41,21 @@ NNetwork xmlToNNetwork(string xmlfilename) {
 			return NNetwork(layers);
 		}
 		
-		Layer *layerToPush = xmlToLayer(neurElem, nben, layerTypeID, nbout);
-		cout << "layerToPush : " << &layerToPush << endl;
-		layerToPush->printLayerInfo();
-		layers.push_back(*layerToPush);
-		cout << "PUSH" << endl;
+		Layer layerToPush = xmlToLayer(neurElem, nben, layerTypeID, nbout);
+		layerToPush.printLayerInfo();
+		layers.push_back(layerToPush);
 		layerElem->QueryIntAttribute("nbneurons", &nben); // on détermine le nben à partir du layer précédent
 		layerElem = layerElem->NextSiblingElement(); // iteration
 	}
-	//On renvoie le NNetwork construit
 	return NNetwork(layers);	
-
 }
 
 
-Layer* xmlToLayer(TiXmlElement* neurElem, int nben, int layerTypeID, int nbout) {
-	Layer* layerToConstruct = NULL;
+Layer xmlToLayer(TiXmlElement* neurElem, int nben, int layerTypeID, int nbout) 
+{
 	if(layerTypeID==INPUT) {
 		nben=nbout; //optionnel mais secure
-		layerToConstruct = new Layer(nben, nbout);
-		return layerToConstruct;
+		return Layer(nben, nbout);
 	} else {
 		//valeurs à lire
 		vector<double> bias;
@@ -83,13 +78,13 @@ Layer* xmlToLayer(TiXmlElement* neurElem, int nben, int layerTypeID, int nbout) 
 			neurElem = neurElem->NextSiblingElement(); // iteration 
 		}
 		
-		layerToConstruct = new Layer(nben, nbout, weights, bias, functionsID, functionsParam);
-		return layerToConstruct;
+		return Layer(nben, nbout, weights, bias, functionsID, functionsParam);
 	}
 }
 
 //CA MARCHE
-vector<double> decodeListOfDouble(string values) {
+vector<double> decodeListOfDouble(string values) 
+{
 
 	vector<double> finalValues;
 	std::istringstream s(values);
@@ -101,11 +96,13 @@ vector<double> decodeListOfDouble(string values) {
     return finalValues;
 }
 
-void saveNetwork(NNetwork& network, string xmlfilename) {
+void saveNetwork(NNetwork& network, string xmlfilename) 
+{
 
 }
 
-char* codeListOfDouble(vector<double>& listOfDouble) {
+char* codeListOfDouble(vector<double>& listOfDouble) 
+{
 
 	return NULL;
 }
