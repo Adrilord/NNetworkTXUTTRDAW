@@ -15,7 +15,7 @@ using namespace std;
 
 NNetwork xmlToNNetwork(string xmlfilename);
 
-Layer xmlToLayer(TiXmlElement* firstNeuronElem, int& nben, int& layerTypeID, int& nbout);
+Layer* xmlToLayer(TiXmlElement* firstNeuronElem, int nben, int layerTypeID, int nbout);
 
 vector<double> decodeListOfDouble(string values);
 

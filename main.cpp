@@ -8,20 +8,28 @@
 #include "NNetwork.h"
 #include "xmlparser.h"
 
-void test0Layer () {
+void showGslVector(gsl_vector* gslVector)
+{
+	for(unsigned int i=0; i<gslVector->size; i++) {
+		cout << "value " << i << " : " << gsl_vector_get(gslVector, i) << endl;
+	}
+}
+
+void testLayer () 
+{
 	int nben=10;
-	int nbout=10;
-	Layer lol = Layer(nben,nbout);
+	int nbout=5;
+	Layer tlayer = Layer(nben,nbout);
+	tlayer.printLayerInfo();
 	gsl_vector* en = gsl_vector_alloc(nben);
 	for(int i=0; i<nben; i++) {
 		gsl_vector_set (en, i, 5);
 	}
-	gsl_vector* testout = gsl_vector_alloc(nbout);
-	testout = lol.calculPreOutput(en);
-	testout = lol.calculOuput(testout);
-	for(int i=0; i<nbout; i++) {
-		printf ("vout_%d = %g\n", i, gsl_vector_get (testout, i));
-	}
+	gsl_vector* preout = gsl_vector_alloc(nbout);
+	gsl_vector* out = gsl_vector_alloc(nbout);
+	tlayer.calculPreOutput(en,preout);
+	tlayer.calculOuput(preout,out);
+	showGslVector(out);
 }
 
 void testtinyxml() {
@@ -50,11 +58,11 @@ void testtinyxml() {
 	}
 }
 
-void test0xmlparser() {
+void testxmlparser() {
 	NNetwork nono = xmlToNNetwork("testxml.xml");
 }
 
 int main(int argc, char* argv[]) {
-	test0xmlparser();
+	testxmlparser();
 	return 0;
 }
