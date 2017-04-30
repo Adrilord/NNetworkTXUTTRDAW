@@ -20,3 +20,6 @@ weights=”[value0] [value1] … [value[nbneurons]]” // (attention à avoir le
 #define OUTPUT 2
 #define ID 0
 #define SIGMOID 1
+#define SIGMOIDP 2
+#define TANH 3
+#define GAUSSIAN 10

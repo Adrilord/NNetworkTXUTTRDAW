@@ -56,5 +56,11 @@ vector<vector<double>> NNetwork::calculOuput(vector<vector<double>> input)
 {
 	
 }
-		
-//gsl_matrix* calculOuput(gsl_matrix* input);
+
+void NNetwork::printNetworkInfo() 
+{
+	for(unsigned int i=0; i < this->Layers.size(); i++) {
+		cout << "Layer n° " << i << endl;
+		this->Layers.at(i).printLayerInfo();
+	}
+}

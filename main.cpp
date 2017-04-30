@@ -65,12 +65,17 @@ void testxmlparser()
 
 void testForwarding()
 {
+	//Création et test du NNetwork
 	NNetwork nono = xmlToNNetwork("testxml.xml");
+	nono.printNetworkInfo();
+	
+	//Construction de l'input
 	vector<double> input;
 	input.push_back(4);
 	input.push_back(5);
 	input.push_back(2);
-	
+
+	//Calcul et test de l'output
 	vector<double> output=nono.calculOuput(input);
 	for(unsigned int i=0; i<output.size(); i++) {
 		cout << "OUTPUT" << endl;

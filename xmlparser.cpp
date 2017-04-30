@@ -42,7 +42,6 @@ NNetwork xmlToNNetwork(string xmlfilename) {
 		}
 		
 		Layer layerToPush = xmlToLayer(neurElem, nben, layerTypeID, nbout);
-		layerToPush.printLayerInfo();
 		layers.push_back(layerToPush);
 		layerElem->QueryIntAttribute("nbneurons", &nben); // on détermine le nben à partir du layer précédent
 		layerElem = layerElem->NextSiblingElement(); // iteration
@@ -67,12 +66,21 @@ Layer xmlToLayer(TiXmlElement* neurElem, int nben, int layerTypeID, int nbout)
 			//décodages simples
 			bias.push_back(atof(neurElem->Attribute("bias")));
 			functionsID.push_back(atoi(neurElem->Attribute("functionid")));
-			//décodages complexes (listes)
-			string tempString;
-			neurElem->QueryStringAttribute("weights",&tempString);
-			weights.push_back(decodeListOfDouble(tempString));
-			if (neurElem->QueryStringAttribute("functionparameters",&tempString)) {
-				functionsParam.push_back(decodeListOfDouble(tempString));
+			
+			//décodages poids
+			string tempStringWeights;
+			neurElem->QueryStringAttribute("weights",&tempStringWeights);
+			weights.push_back(decodeListOfDouble(tempStringWeights));
+			
+			//décodages paramètres de fonction
+			string tempStringParams;
+			neurElem->QueryStringAttribute("functionparameters",&tempStringParams);
+			if(!tempStringParams.empty()) {
+				functionsParam.push_back(decodeListOfDouble(tempStringParams));
+			} else {
+				vector<double> zero;
+				zero.push_back(0);
+				functionsParam.push_back(zero);
 			}
 					
 			neurElem = neurElem->NextSiblingElement(); // iteration 

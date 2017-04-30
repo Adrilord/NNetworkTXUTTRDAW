@@ -26,6 +26,8 @@ class NNetwork {
 		
 		//~ NNetwork trainNNetwork(vector<double> input);
 		//~ NNetwork trainNNetwork(vector<double> input);
+		
+		void printNetworkInfo();
 };
 
 #endif

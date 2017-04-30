@@ -71,12 +71,23 @@ void Layer::calculDelta(gsl_vector* en, gsl_vector* delta, Layer nextLayer)
 
 double Layer::calculFromFunction(int neuron, double& z)
 {
+	vector<double> params;
+	if(this->functionsParam.size() >= 1) {
+			params = this->functionsParam.at(neuron);
+	}
 	switch (functionsID.at(neuron)) {
+		case ID :
+			return z;
+			break;
 		case SIGMOID :
 			return 1.f /(1+gsl_sf_exp(-z));
 			break;
-		case ID :
-			return z;
+		case SIGMOIDP :
+			cout << "TEST" << endl;
+			return 1.f /(1+gsl_sf_exp(-params.at(0)*z));
+			break;
+		case 3 : 
+			return (gsl_sf_exp(z) - gsl_sf_exp(-z)) / (gsl_sf_exp(z) + gsl_sf_exp(-z));
 			break;
 		default :
 			return z;
@@ -156,5 +167,12 @@ void Layer::printLayerInfo()
 	cout << "functionID values :" << endl;
 	for(unsigned int i=0; i<this->functionsID.size(); i++) {
 		cout << this->functionsID.at(i) << endl;
+	}
+	cout << "functionParameters values :" << endl;
+	for(unsigned int j=0; j < this->functionsParam.size(); j++) {
+		for(unsigned int k=0; k < this->functionsParam.at(j).size(); k++) {
+				cout << functionsParam.at(j).at(k) << " ";
+		}
+		cout << endl;
 	}
 }
