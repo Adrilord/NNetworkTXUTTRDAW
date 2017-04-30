@@ -83,7 +83,6 @@ double Layer::calculFromFunction(int neuron, double& z, gsl_vector* input)
 			return 1.f /(1+gsl_sf_exp(-z));
 			break;
 		case SIGMOIDP :
-			cout << "TEST" << endl;
 			return 1.f /(1+gsl_sf_exp(-params.at(0)*z));
 			break;
 		case TANH : 

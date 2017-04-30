@@ -90,10 +90,8 @@ Layer xmlToLayer(TiXmlElement* neurElem, int nben, int layerTypeID, int nbout)
 	}
 }
 
-//CA MARCHE
 vector<double> decodeListOfDouble(string values) 
 {
-
 	vector<double> finalValues;
 	std::istringstream s(values);
 	double d;
@@ -106,11 +104,56 @@ vector<double> decodeListOfDouble(string values)
 
 void saveNetwork(NNetwork& network, string xmlfilename) 
 {
-
+	//Création du fichier s'il n'existe pas (!!ne supprime rien!!)
+	//Mise en place des balises initiales
+	ofstream objetfichier;
+	objetfichier.open(xmlfilename, ios::out); //on ouvre le fichier en ecriture
+	if (!objetfichier.bad()) { //permet de tester si le fichier s'est ouvert sans probleme
+		objetfichier << "<?xml version='1.0' encoding='UTF-8' ?>" << endl;
+		objetfichier << "<NNetwork>" << endl;
+		objetfichier << "</NNetwork>" << endl;
+		objetfichier.close(); //on ferme le fichier pour liberer la mémoire
+	} else {
+		cerr << "Erreur création fichier " << xmlfilename << endl;
+	}
+		
+	//Ouverture du fichier xml (et création d'un handle)
+	TiXmlDocument doc(xmlfilename);
+	if(!doc.LoadFile()){
+		cerr << "erreur lors du chargement" << endl;
+		cerr << "error #" << doc.ErrorId() << " : " << doc.ErrorDesc() << endl;
+	}
+	//TiXmlHandle hdl(&doc);
+	TiXmlElement *nnElem = doc.FirstChildElement();
+	vector<Layer> layers = network.getLayers();
+	for(unsigned int l=0; l<layers.size(); l++) {
+		TiXmlElement newLayer("Layer");
+		//On détecte le type de Layer
+		if(l==0) {
+			newLayer.SetAttribute("typeid", "0");
+		} else if (l==layers.size()-1) {
+			newLayer.SetAttribute("typeid", "2");
+		} else {
+			newLayer.SetAttribute("typeid", "1");
+		}
+		//On indique le nombre de neurones
+		newLayer.SetAttribute("nbneurons", layers.at(l).getNbOut());
+		for(unsigned int n=0; n<layers.size(); n++) {
+			
+		}
+		nnElem->InsertEndChild(newLayer);
+	}
+	doc.SaveFile(xmlfilename);  // enregistrement des modifications
 }
 
 char* codeListOfDouble(vector<double>& listOfDouble) 
 {
-
-	return NULL;
+	ostringstream stringList;
+	for(unsigned int i=0; i<listOfDouble.size(); i++) {
+		stringList << listOfDouble.at(i) << " ";
+	}
+	string str = stringList.str();
+	char *cstr = new char[str.length() + 1];
+	strcpy(cstr, str.c_str());
+	return cstr;
 }

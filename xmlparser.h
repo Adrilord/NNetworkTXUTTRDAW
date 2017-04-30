@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iostream>
 #include <tinyxml.h>
+#include <fstream>
 #include "NNetwork.h"
 #include "Layer.h"
 #include "xmlspec.h"

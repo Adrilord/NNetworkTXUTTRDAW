@@ -57,6 +57,11 @@ vector<vector<double>> NNetwork::calculOuput(vector<vector<double>> input)
 	
 }
 
+vector<Layer> NNetwork::getLayers() 
+{
+	return this->Layers;
+}
+
 void NNetwork::printNetworkInfo() 
 {
 	for(unsigned int i=0; i < this->Layers.size(); i++) {

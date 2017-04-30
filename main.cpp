@@ -83,7 +83,16 @@ void testForwarding()
 	}
 }
 
+void testSaveNetwork()
+{
+	//Création et test du NNetwork
+	NNetwork nono = xmlToNNetwork("testxml.xml");
+	nono.printNetworkInfo();
+	
+	saveNetwork(nono, "savetestxml.xml");
+}
+
 int main(int argc, char* argv[]) {
-	testForwarding();
+	testSaveNetwork();
 	return 0;
 }

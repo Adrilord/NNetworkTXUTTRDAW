@@ -27,6 +27,8 @@ class NNetwork {
 		//~ NNetwork trainNNetwork(vector<double> input);
 		//~ NNetwork trainNNetwork(vector<double> input);
 		
+		vector<Layer> getLayers();
+		
 		void printNetworkInfo();
 };
 
