@@ -50,17 +50,17 @@ void Layer::freeSpace()
 	gsl_matrix_free(this->weights);
 }
 
-void Layer::calculPreOutput(gsl_vector* en, gsl_vector* preOutput) 
+void Layer::calculPreOutput(gsl_vector* input, gsl_vector* preOutput) 
 {
 	gsl_blas_dcopy(this->bias, preOutput);
-	gsl_blas_dgemv (CblasNoTrans, 1.f, this->weights, en, 1, preOutput);
+	gsl_blas_dgemv (CblasNoTrans, 1.f, this->weights, input, 1, preOutput);
 }
 
 void Layer::calculOuput(gsl_vector* preOutput, gsl_vector* output)
 {
 	for (int i = 0; i < this->nbout; i++) {
 		double z = gsl_vector_get (preOutput, i); //présortie
-		double a = calculFromFunction(i,z);//sortie
+		double a = calculFromFunction(i,z,NULL);//sortie //TODO à adapter pour RBF
 		gsl_vector_set (output, i, a);
 	}
 }
@@ -69,7 +69,7 @@ void Layer::calculDelta(gsl_vector* en, gsl_vector* delta, Layer nextLayer)
 {
 }
 
-double Layer::calculFromFunction(int neuron, double& z)
+double Layer::calculFromFunction(int neuron, double& z, gsl_vector* input)
 {
 	vector<double> params;
 	if(this->functionsParam.size() >= 1) {
@@ -86,13 +86,32 @@ double Layer::calculFromFunction(int neuron, double& z)
 			cout << "TEST" << endl;
 			return 1.f /(1+gsl_sf_exp(-params.at(0)*z));
 			break;
-		case 3 : 
+		case TANH : 
 			return (gsl_sf_exp(z) - gsl_sf_exp(-z)) / (gsl_sf_exp(z) + gsl_sf_exp(-z));
+			break;
+		case GAUSSIAN :
+			return gsl_sf_exp(-params.at(0) * calculDistForRBF(params, input));
 			break;
 		default :
 			return z;
 			break;
 	}
+}
+
+double Layer::calculDistForRBF(vector<double> params, gsl_vector* input)
+{
+	gsl_vector* center = gsl_vector_alloc(input->size);
+	for(unsigned int i=0; i < center->size; i++) {
+		gsl_vector_set(center, i, params.at(i+1));
+	}
+	gsl_vector* diff = center;
+	gsl_vector_sub(diff, input);
+	
+	double z = 0;
+	gsl_blas_ddot(diff, diff, &z);
+	
+	gsl_vector_free(diff);
+	return z;
 }
 
 gsl_vector* Layer::stdToGslVector(vector<double>& stdVector)

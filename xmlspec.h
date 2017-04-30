@@ -22,4 +22,4 @@ weights=”[value0] [value1] … [value[nbneurons]]” // (attention à avoir le
 #define SIGMOID 1
 #define SIGMOIDP 2
 #define TANH 3
-#define GAUSSIAN 10
+#define GAUSSIAN 4 // Le premier paramétre correspond au beta de l'exp et les suivants aux coordonnées de centres du neurone

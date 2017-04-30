@@ -28,11 +28,12 @@ class Layer {
 		
 		void freeSpace(); //A utiliser manuellement plutôt que d'avoir un destructeur (cela pose des problèmes)
 
-		void calculPreOutput(gsl_vector* en, gsl_vector* preOutput);
+		void calculPreOutput(gsl_vector* input, gsl_vector* preOutput);
 		void calculOuput(gsl_vector* preOutput, gsl_vector* output);
 		void calculDelta(gsl_vector* en, gsl_vector* delta, Layer nextLayer); //backward propagation
 		
-		double calculFromFunction(int neuron, double& z);
+		double calculFromFunction(int neuron, double& z, gsl_vector* input);
+		double calculDistForRBF(vector<double> params, gsl_vector* input);
 		
 		gsl_vector* stdToGslVector(vector<double>& stdVector);
 		gsl_matrix* stdToGslMatrix(vector<vector<double>>& stdMatrix);
