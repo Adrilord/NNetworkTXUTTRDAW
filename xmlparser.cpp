@@ -138,8 +138,16 @@ void saveNetwork(NNetwork& network, string xmlfilename)
 		}
 		//On indique le nombre de neurones
 		newLayer.SetAttribute("nbneurons", layers.at(l).getNbOut());
-		for(unsigned int n=0; n<layers.size(); n++) {
-			
+		for(int n=0; n<layers.at(l).getNbOut(); n++) {
+			TiXmlElement newNeuron("Neuron");
+			/*functionid="2" functionparameters="1" bias="1" weights*/
+			newNeuron.SetAttribute("functionid",layers.at(l).getFunctionsID().at(n));
+			if(layers.at(l).getFunctionsParam().size() >= 1 ) {
+				newNeuron.SetAttribute("functionparameters",codeListOfDouble(layers.at(l).getFunctionsParam().at(n)));	
+			}
+			newNeuron.SetAttribute("bias",layers.at(l).getBias().at(n));
+			newNeuron.SetAttribute("weights",codeListOfDouble(layers.at(l).getWeights().at(n)));
+			newLayer.InsertEndChild(newNeuron);
 		}
 		nnElem->InsertEndChild(newLayer);
 	}

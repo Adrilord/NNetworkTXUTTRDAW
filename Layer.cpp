@@ -56,12 +56,33 @@ void Layer::calculPreOutput(gsl_vector* input, gsl_vector* preOutput)
 	gsl_blas_dgemv (CblasNoTrans, 1.f, this->weights, input, 1, preOutput);
 }
 
+void Layer::calculPreOutput(gsl_matrix* input, gsl_matrix* preOutput) 
+{
+	for(unsigned int j=0; j<preOutput->size1; j++) {
+		for(unsigned int k=0; k<preOutput->size2; k++) {
+				gsl_matrix_set(preOutput, j, k, gsl_vector_get(this->bias, j));
+		}
+	}
+	gsl_blas_dgemm (CblasNoTrans, CblasNoTrans, 1.f, this->weights, input, 1, preOutput);
+}
+
 void Layer::calculOuput(gsl_vector* preOutput, gsl_vector* output)
 {
 	for (int i = 0; i < this->nbout; i++) {
-		double z = gsl_vector_get (preOutput, i); //présortie
+		double z = gsl_vector_get(preOutput, i); //présortie
 		double a = calculFromFunction(i,z,NULL);//sortie //TODO à adapter pour RBF
 		gsl_vector_set (output, i, a);
+	}
+}
+
+void Layer::calculOuput(gsl_matrix* preOutput, gsl_matrix* output)
+{
+	for(unsigned int j=0; j<preOutput->size1; j++) {
+		for(unsigned int k=0; k<preOutput->size2; k++) {
+			double z = gsl_matrix_get(preOutput, j, k); //présortie
+			double a = calculFromFunction(j,z,NULL);//sortie //TODO à adapter pour RBF
+			gsl_matrix_set (output, j, k, a);
+		}
 	}
 }
 
@@ -123,14 +144,25 @@ gsl_vector* Layer::stdToGslVector(vector<double>& stdVector)
 }
 
 
-gsl_matrix* Layer::stdToGslMatrix(vector<vector<double>>& stdMatrix)
+gsl_matrix* Layer::stdToGslMatrix(vector<vector<double>>& stdMatrix) //les vector sont en ligne
 {
 	gsl_matrix* gslmatrix = gsl_matrix_alloc (stdMatrix.size(), stdMatrix.at(0).size());
 	for(unsigned int j=0; j<stdMatrix.size(); j++) {
 		for(unsigned int k=0; k<stdMatrix.at(j).size(); k++) {
 				gsl_matrix_set (gslmatrix, j, k, stdMatrix.at(j).at(k));
 			}
-		}
+	}
+	return gslmatrix;
+}
+
+gsl_matrix* Layer::stdToGslMatrixTrans(vector<vector<double>>& stdMatrix) //les vector sont en colonnes
+{
+	gsl_matrix* gslmatrix = gsl_matrix_alloc (stdMatrix.at(0).size(), stdMatrix.size());
+	for(unsigned int k=0; k<stdMatrix.size(); k++) {
+		for(unsigned int j=0; j<stdMatrix.at(k).size(); j++) {
+				gsl_matrix_set (gslmatrix, j, k, stdMatrix.at(k).at(j));
+			}
+	}
 	return gslmatrix;
 }
 
@@ -145,7 +177,7 @@ vector<double> Layer::gslToStdVector(gsl_vector* gslvector)
 }
 
 
-vector<vector<double>> Layer::gslToStdMatrix(gsl_matrix* gslmatrix)
+vector<vector<double>> Layer::gslToStdMatrix(gsl_matrix* gslmatrix) //les vector sont en lignes
 {
 	vector<vector<double>> stdMatrix;
 	for(unsigned int j=0; j<gslmatrix->size1; j++) {
@@ -158,6 +190,19 @@ vector<vector<double>> Layer::gslToStdMatrix(gsl_matrix* gslmatrix)
 	return stdMatrix;
 }
 
+vector<vector<double>> Layer::gslToStdMatrixTrans(gsl_matrix* gslmatrix) //les vector sont en colonnes
+{
+	vector<vector<double>> stdMatrix;
+	for(unsigned int k=0; k<gslmatrix->size2; k++) {
+		vector<double> column;
+		for(unsigned int j=0; j<gslmatrix->size1; j++) {
+				column.push_back(gsl_matrix_get(gslmatrix, j, k));
+		}
+		stdMatrix.push_back(column);
+	}
+	return stdMatrix;
+}
+
 int Layer::getNbEn()
 {
 	return this->nben;
@@ -166,6 +211,26 @@ int Layer::getNbEn()
 int Layer::getNbOut()
 {
 	return this->nbout;
+}
+
+vector<double> Layer::getBias()
+{
+	return gslToStdVector(this->bias);
+}
+
+vector<vector<double>> Layer::getWeights()
+{
+	return gslToStdMatrix(this->weights);
+}
+
+vector<int> Layer::getFunctionsID()
+{
+	return this->functionsID;
+}
+
+vector<vector<double>> Layer::getFunctionsParam()
+{
+	return this->functionsParam;
 }
 
 void Layer::printLayerInfo()

@@ -1,2 +1,6 @@
-finir saveNetwork
-écrire la fonction calculOutput avec gsl_matrix en entrée
+finir saveNetwork --> done
+écrire la fonction calculOutput avec gsl_matrix en entrée --> done (to check maybe)
+permettre la lecture des inputs depuis des fichiers --> 
+permettre la lecture d'un fichier MNIST
+commencer la partie apprentissage --> to begin before 15/5
+documentation

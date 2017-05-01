@@ -63,7 +63,7 @@ void testxmlparser()
 	NNetwork nono = xmlToNNetwork("testxml.xml");
 }
 
-void testForwarding()
+void testForwardingVector()
 {
 	//Création et test du NNetwork
 	NNetwork nono = xmlToNNetwork("testxml.xml");
@@ -92,7 +92,35 @@ void testSaveNetwork()
 	saveNetwork(nono, "savetestxml.xml");
 }
 
+void testForwardingMatrix()
+{
+	//Création et test du NNetwork
+	NNetwork nono = xmlToNNetwork("testxml.xml");
+	nono.printNetworkInfo();
+	
+	//Construction de l'input
+	vector<vector<double>> input;
+	vector<double> input1;
+	vector<double> input2;
+	input1.push_back(4);
+	input1.push_back(5);
+	input1.push_back(2);
+	input2=input1;
+	input.push_back(input1);
+	input.push_back(input2);
+
+	//Calcul et test de l'output
+	vector<vector<double>> output=nono.calculOuput(input);
+	for(unsigned int j=0; j<output.size(); j++) {
+		cout << "OUTPUT" << endl;
+		for(unsigned int k=0; k<output.at(j).size(); k++) {
+			cout << output.at(j).at(k) << " ";
+		}
+		cout << endl;
+	}
+}
+
 int main(int argc, char* argv[]) {
-	testSaveNetwork();
+	testForwardingMatrix();
 	return 0;
 }
