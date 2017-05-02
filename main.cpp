@@ -8,12 +8,17 @@
 #include "NNetwork.h"
 #include "xmlparser.h"
 
+//Fonction qui affiche les valeurs d'un gsl_vector
 void showGslVector(gsl_vector* gslVector)
 {
 	for(unsigned int i=0; i<gslVector->size; i++) {
 		cout << "value " << i << " : " << gsl_vector_get(gslVector, i) << endl;
 	}
 }
+
+/*Fonctions de test avec noms explicites pour tester
+ * les fonctionnalités du programme
+ */
 
 void testLayer () 
 {
@@ -120,6 +125,7 @@ void testForwardingMatrix()
 	}
 }
 
+//Programme principal
 int main(int argc, char* argv[]) {
 	testForwardingMatrix();
 	return 0;

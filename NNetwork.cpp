@@ -8,7 +8,7 @@ NNetwork::NNetwork(vector<Layer> Layers)
 NNetwork::~NNetwork() 
 {
 	for(unsigned int i=0; i<this->Layers.size(); i++) {
-		this->Layers.at(i).freeSpace();
+		this->Layers.at(i).freeSpace(); //(Utilisation du destructeur manuel)
 	}
 }
 

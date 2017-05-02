@@ -15,6 +15,7 @@ bias=”[value]” (ou valeur aléatoire)
 weights=”[value0] [value1] … [value[nbneurons]]” // (attention à avoir le bon nombre) (ou valeur aléatoire)
 */
 
+//Association de chaque ID de fonction à un nom de préprocessing
 #define INPUT 0
 #define HIDDEN 1
 #define OUTPUT 2

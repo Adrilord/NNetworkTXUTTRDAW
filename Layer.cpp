@@ -66,21 +66,21 @@ void Layer::calculPreOutput(gsl_matrix* input, gsl_matrix* preOutput)
 	gsl_blas_dgemm (CblasNoTrans, CblasNoTrans, 1.f, this->weights, input, 1, preOutput);
 }
 
-void Layer::calculOuput(gsl_vector* preOutput, gsl_vector* output)
+void Layer::calculOuput(gsl_vector* preOutput, gsl_vector* output, gsl_input* input)
 {
 	for (int i = 0; i < this->nbout; i++) {
 		double z = gsl_vector_get(preOutput, i); //présortie
-		double a = calculFromFunction(i,z,NULL);//sortie //TODO à adapter pour RBF
+		double a = calculFromFunction(i,z,input);//sortie //TODO à adapter pour RBF
 		gsl_vector_set (output, i, a);
 	}
 }
 
-void Layer::calculOuput(gsl_matrix* preOutput, gsl_matrix* output)
+void Layer::calculOuput(gsl_matrix* preOutput, gsl_matrix* output, gsl_input* input)
 {
 	for(unsigned int j=0; j<preOutput->size1; j++) {
 		for(unsigned int k=0; k<preOutput->size2; k++) {
 			double z = gsl_matrix_get(preOutput, j, k); //présortie
-			double a = calculFromFunction(j,z,NULL);//sortie //TODO à adapter pour RBF
+			double a = calculFromFunction(j,z,input);//sortie //TODO à adapter pour RBF
 			gsl_matrix_set (output, j, k, a);
 		}
 	}

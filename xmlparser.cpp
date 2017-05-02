@@ -140,7 +140,7 @@ void saveNetwork(NNetwork& network, string xmlfilename)
 		newLayer.SetAttribute("nbneurons", layers.at(l).getNbOut());
 		for(int n=0; n<layers.at(l).getNbOut(); n++) {
 			TiXmlElement newNeuron("Neuron");
-			/*functionid="2" functionparameters="1" bias="1" weights*/
+			//On génère tous les attributs pour chaque neurone
 			newNeuron.SetAttribute("functionid",layers.at(l).getFunctionsID().at(n));
 			if(layers.at(l).getFunctionsParam().size() >= 1 ) {
 				newNeuron.SetAttribute("functionparameters",codeListOfDouble(layers.at(l).getFunctionsParam().at(n)));	
