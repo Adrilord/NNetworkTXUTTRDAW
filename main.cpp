@@ -7,6 +7,7 @@
 #include "Layer.h"
 #include "NNetwork.h"
 #include "xmlparser.h"
+#include "iomanager.h"
 
 //Fonction qui affiche les valeurs d'un gsl_vector
 void showGslVector(gsl_vector* gslVector)
@@ -153,9 +154,35 @@ void testForwardingMatrixFromFile()
 	}
 }
 
+void testOutputInFile()
+{
+	//Création et test du NNetwork
+	NNetwork nono = xmlToNNetwork("testxml.xml");
+	nono.printNetworkInfo();
+	
+	//Construction de l'input
+	vector<vector<double>> inputs(getInputsFromFile("testInputFile"));
+	
+	//Construction de l'output
+	vector<vector<double>> outputs=nono.calculOuput(inputs);
+	
+	putOutputToFile("testOutputFile", outputs);
+}
+
+void testMNISTreader()
+{
+  vector<vector<double>> ar;
+  ReadMNIST(10000,784,ar);
+	for(unsigned int i=0; i<2; i++) {
+		for(unsigned int j=0; i<ar.at(i).size(); j++) {
+			printf("%f",ar.at(0).at(i));
+		}
+	}
+}
+
 //Programme principal
 int main(int argc, char* argv[]) {
-	testForwardingMatrix();
-	testForwardingMatrixFromFile();
+	testOutputInFile();
+	testSaveNetwork();
 	return 0;
 }

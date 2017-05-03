@@ -1,9 +1,9 @@
 finir saveNetwork --> done
 écrire la fonction calculOutput avec gsl_matrix en entrée --> done (to check maybe)
-permettre la lecture des inputs depuis des fichiers --> 
-permettre l'écriture des outputs dans un fichier -->
-permettre la lecture d'un fichier MNIST -->
-génération automatique de Réseau de Neurone -->
+permettre la lecture des inputs depuis des fichiers --> done
+permettre l'écriture des outputs dans un fichier --> done
+permettre la lecture d'un fichier MNIST --> half done
+génération automatique de Réseau de Neurone --> 
 RBF with matrices -->
 commencer la partie apprentissage --> to begin before 15/5
-documentation --> done (for the moment)
+documentation --> in constant progress

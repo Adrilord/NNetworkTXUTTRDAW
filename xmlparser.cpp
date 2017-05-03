@@ -107,8 +107,8 @@ void saveNetwork(NNetwork& network, string xmlfilename)
 	//Création du fichier s'il n'existe pas (!!ne supprime rien!!)
 	//Mise en place des balises initiales
 	ofstream objetfichier;
-	objetfichier.open(xmlfilename, ios::out); //on ouvre le fichier en ecriture
-	if (!objetfichier.bad()) { //permet de tester si le fichier s'est ouvert sans probleme
+	objetfichier.open(xmlfilename, ios::out | ios::trunc); //on ouvre le fichier en ecriture
+	if (objetfichier) { //permet de tester si le fichier s'est ouvert sans probleme
 		objetfichier << "<?xml version='1.0' encoding='UTF-8' ?>" << endl;
 		objetfichier << "<NNetwork>" << endl;
 		objetfichier << "</NNetwork>" << endl;
@@ -164,23 +164,4 @@ char* codeListOfDouble(vector<double>& listOfDouble)
 	char *cstr = new char[str.length() + 1];
 	strcpy(cstr, str.c_str());
 	return cstr;
-}
-
-vector<vector<double>> getInputsFromFile(string filename)
-{
-	vector<vector<double>> inputs;
-	ifstream fichier(filename);
-	if (!fichier.bad()) { //permet de tester si le fichier s'est ouvert sans probleme
-		string lign;
-		while(getline(fichier, lign)) {
-			//Chaque ligne correspond à un input
-			//les lignes deviendront ensuite des vecteurs colonnes
-			//de matrice
-			inputs.push_back(decodeListOfDouble(lign));
-		}
-		fichier.close();
-	} else {
-		cerr << "Erreur ouverture fichier " << filename << endl;
-	}
-	return inputs;
 }
