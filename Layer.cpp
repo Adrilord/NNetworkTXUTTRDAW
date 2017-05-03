@@ -66,7 +66,7 @@ void Layer::calculPreOutput(gsl_matrix* input, gsl_matrix* preOutput)
 	gsl_blas_dgemm (CblasNoTrans, CblasNoTrans, 1.f, this->weights, input, 1, preOutput);
 }
 
-void Layer::calculOuput(gsl_vector* preOutput, gsl_vector* output, gsl_input* input)
+void Layer::calculOuput(gsl_vector* preOutput, gsl_vector* output, gsl_vector* input)
 {
 	for (int i = 0; i < this->nbout; i++) {
 		double z = gsl_vector_get(preOutput, i); //présortie
@@ -75,7 +75,7 @@ void Layer::calculOuput(gsl_vector* preOutput, gsl_vector* output, gsl_input* in
 	}
 }
 
-void Layer::calculOuput(gsl_matrix* preOutput, gsl_matrix* output, gsl_input* input)
+void Layer::calculOuput(gsl_matrix* preOutput, gsl_matrix* output, gsl_matrix* input)
 {
 	for(unsigned int j=0; j<preOutput->size1; j++) {
 		for(unsigned int k=0; k<preOutput->size2; k++) {
@@ -118,6 +118,34 @@ double Layer::calculFromFunction(int neuron, double& z, gsl_vector* input)
 	}
 }
 
+double Layer::calculFromFunction(int neuron, double& z, gsl_matrix* input)
+{
+	vector<double> params;
+	if(this->functionsParam.size() >= 1) {
+			params = this->functionsParam.at(neuron);
+	}
+	switch (functionsID.at(neuron)) {
+		case ID :
+			return z;
+			break;
+		case SIGMOID :
+			return 1.f /(1+gsl_sf_exp(-z));
+			break;
+		case SIGMOIDP :
+			return 1.f /(1+gsl_sf_exp(-params.at(0)*z));
+			break;
+		case TANH : 
+			return (gsl_sf_exp(z) - gsl_sf_exp(-z)) / (gsl_sf_exp(z) + gsl_sf_exp(-z));
+			break;
+		case GAUSSIAN :
+			return gsl_sf_exp(-params.at(0) * calculDistForRBF(params, input));
+			break;
+		default :
+			return z;
+			break;
+	}
+}
+
 double Layer::calculDistForRBF(vector<double> params, gsl_vector* input)
 {
 	gsl_vector* center = gsl_vector_alloc(input->size);
@@ -132,6 +160,11 @@ double Layer::calculDistForRBF(vector<double> params, gsl_vector* input)
 	
 	gsl_vector_free(diff);
 	return z;
+}
+
+double Layer::calculDistForRBF(vector<double> params, gsl_matrix* input)
+{
+	return 0; //TODO
 }
 
 gsl_vector* Layer::stdToGslVector(vector<double>& stdVector)

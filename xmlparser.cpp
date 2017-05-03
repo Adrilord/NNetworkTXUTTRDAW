@@ -165,3 +165,22 @@ char* codeListOfDouble(vector<double>& listOfDouble)
 	strcpy(cstr, str.c_str());
 	return cstr;
 }
+
+vector<vector<double>> getInputsFromFile(string filename)
+{
+	vector<vector<double>> inputs;
+	ifstream fichier(filename);
+	if (!fichier.bad()) { //permet de tester si le fichier s'est ouvert sans probleme
+		string lign;
+		while(getline(fichier, lign)) {
+			//Chaque ligne correspond à un input
+			//les lignes deviendront ensuite des vecteurs colonnes
+			//de matrice
+			inputs.push_back(decodeListOfDouble(lign));
+		}
+		fichier.close();
+	} else {
+		cerr << "Erreur ouverture fichier " << filename << endl;
+	}
+	return inputs;
+}

@@ -25,12 +25,12 @@ vector<double> NNetwork::calculOuput(vector<double> input)
 	//CALCULATION
 	gsl_blas_dcopy(gslInput, preOutputs[0]);
 	gsl_blas_dcopy(gslInput, outputs[0]);
-	for(unsigned int i=0; i<this->Layers.size()-1; i++) {
-		this->Layers.at(i).calculOuput(preOutputs[i], outputs[i]);
+	for(unsigned int i=1; i<this->Layers.size()-1; i++) { //i=0 est la couche input 
+		this->Layers.at(i).calculOuput(preOutputs[i], outputs[i], outputs[i-1]);
 		this->Layers.at(i+1).calculPreOutput(outputs[i], preOutputs[i+1]);
 	}
 	unsigned int i=this->Layers.size()-1;
-	this->Layers.at(i).calculOuput(preOutputs[i], outputs[i]);
+	this->Layers.at(i).calculOuput(preOutputs[i], outputs[i], outputs[i-1]);
 	vector<double> stdOuput = this->Layers.at(0).gslToStdVector(outputs[i]);  //TODO accéder à la fonction sans objet ???
 	//TEST (marche)
 	//~ cout << "OUTPUTs" << endl;
@@ -63,12 +63,12 @@ vector<vector<double>> NNetwork::calculOuput(vector<vector<double>> input)
 	//CALCULATION
 	gsl_matrix_memcpy(preOutputs[0], gslInput);
 	gsl_matrix_memcpy(outputs[0], gslInput);
-	for(unsigned int i=0; i<this->Layers.size()-1; i++) {
-		this->Layers.at(i).calculOuput(preOutputs[i], outputs[i]);
+	for(unsigned int i=1; i<this->Layers.size()-1; i++) { //i=0 est la couche input 
+		this->Layers.at(i).calculOuput(preOutputs[i], outputs[i], outputs[i-1]);
 		this->Layers.at(i+1).calculPreOutput(outputs[i], preOutputs[i+1]);
 	}
 	unsigned int i=this->Layers.size()-1;
-	this->Layers.at(i).calculOuput(preOutputs[i], outputs[i]);
+	this->Layers.at(i).calculOuput(preOutputs[i], outputs[i], outputs[i-1]);
 	vector<vector<double>> stdOuput = this->Layers.at(0).gslToStdMatrix(outputs[i]);  //TODO accéder à la fonction sans objet ???
 	//TEST (marche)
 	//~ cout << "OUTPUTs" << endl;

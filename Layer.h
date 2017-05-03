@@ -42,16 +42,18 @@ class Layer {
 		void calculPreOutput(gsl_matrix* input, gsl_matrix* preOutput); // plusieurs inputs à la fois
 		//pour obtenir output = functionOfNeurons ( preOutput, input )
 		//où input intervient dans les réseaux RBF notamment
-		void calculOuput(gsl_vector* preOutput, gsl_vector* output, gsl_input* input);
-		void calculOuput(gsl_matrix* preOutput, gsl_matrix* output, gsl_input* input); // plusieurs inputs à la fois
+		void calculOuput(gsl_vector* preOutput, gsl_vector* output, gsl_vector* input);
+		void calculOuput(gsl_matrix* preOutput, gsl_matrix* output, gsl_matrix* input); // plusieurs inputs à la fois
 		
 		//TODO Fonction de calcul de backwarding
 		void calculDelta(gsl_vector* en, gsl_vector* delta, Layer nextLayer); //backward propagation
 		
 		//Fonction de calcul pour chaque neurone
 		double calculFromFunction(int neuron, double& z, gsl_vector* input);
+		double calculFromFunction(int neuron, double& z, gsl_matrix* input);
 		//Fonction utilisé dans le cas de réseaux RBF
 		double calculDistForRBF(vector<double> params, gsl_vector* input);
+		double calculDistForRBF(vector<double> params, gsl_matrix* input);
 		
 		//Fonctions de transformation de std::vector en objets gsl
 		gsl_vector* stdToGslVector(vector<double>& stdVector);

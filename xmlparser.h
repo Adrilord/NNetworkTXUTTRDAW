@@ -36,7 +36,6 @@ void saveNetwork(NNetwork& network, string xmlfilename);
 //vector<double> au format texte
 char* codeListOfDouble(vector<double>& listOfDouble);
 
-
-
+vector<vector<double>> getInputsFromFile(string filename);
 
 #endif

@@ -33,7 +33,7 @@ void testLayer ()
 	gsl_vector* preout = gsl_vector_alloc(nbout);
 	gsl_vector* out = gsl_vector_alloc(nbout);
 	tlayer.calculPreOutput(en,preout);
-	tlayer.calculOuput(preout,out);
+	tlayer.calculOuput(preout,out,NULL);
 	showGslVector(out);
 }
 
@@ -125,8 +125,37 @@ void testForwardingMatrix()
 	}
 }
 
+void testForwardingMatrixFromFile()
+{
+	//Création et test du NNetwork
+	NNetwork nono = xmlToNNetwork("testxml.xml");
+	nono.printNetworkInfo();
+	
+	//Construction de l'input
+	vector<vector<double>> inputs(getInputsFromFile("testInputFile"));
+	for(unsigned int j=0; j<inputs.size(); j++) {
+		cout << "INPUT" << endl;
+		for(unsigned int k=0; k<inputs.at(j).size(); k++) {
+			cout << inputs.at(j).at(k) << " ";
+		}
+		cout << endl;
+	}
+
+
+	//Calcul et test de l'output
+	vector<vector<double>> output=nono.calculOuput(inputs);
+	for(unsigned int j=0; j<output.size(); j++) {
+		cout << "OUTPUT" << endl;
+		for(unsigned int k=0; k<output.at(j).size(); k++) {
+			cout << output.at(j).at(k) << " ";
+		}
+		cout << endl;
+	}
+}
+
 //Programme principal
 int main(int argc, char* argv[]) {
 	testForwardingMatrix();
+	testForwardingMatrixFromFile();
 	return 0;
 }
