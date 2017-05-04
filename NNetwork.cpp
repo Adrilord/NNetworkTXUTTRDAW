@@ -5,6 +5,14 @@ NNetwork::NNetwork(vector<Layer> Layers)
 	this->Layers = Layers;
 }
 
+NNetwork(int typeID, vector<int> sizeLayers)
+{
+	this->Layers.push_back(Layer(sizeLayers.at(0),sizeLayers.at(1));
+	for(unsigned i; i<sizeLayers.size(); i++) {
+		
+	}
+}
+
 NNetwork::~NNetwork() 
 {
 	for(unsigned int i=0; i<this->Layers.size(); i++) {

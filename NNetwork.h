@@ -25,6 +25,7 @@ class NNetwork {
 	public :
 		//Constructeur de la classe
 		NNetwork(vector<Layer> Layers);
+		NNetwork(int typeID, vector<int> sizeLayers);
 		
 		//Destructeur
 		~NNetwork();

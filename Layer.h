@@ -64,6 +64,9 @@ class Layer {
 		vector<vector<double>> gslToStdMatrix(gsl_matrix* gslmatrix); //les vector sont en lignes
 		vector<vector<double>> gslToStdMatrixTrans(gsl_matrix* gslmatrix); //les vector sont en colonnes
 		
+		//Randomizer des valeurs de poids et de biais selon une loi normale
+		void randomizeGaussian(double moy, double sigma);
+		
 		//Fonctions qui retournent les attributs
 		int getNbEn();
 		int getNbOut();

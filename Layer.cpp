@@ -236,6 +236,11 @@ vector<vector<double>> Layer::gslToStdMatrixTrans(gsl_matrix* gslmatrix) //les v
 	return stdMatrix;
 }
 
+void Layer::randomizeGaussian(double moy, double sigma)
+{
+	
+}
+
 int Layer::getNbEn()
 {
 	return this->nben;

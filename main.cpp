@@ -173,16 +173,18 @@ void testMNISTreader()
 {
   vector<vector<double>> ar;
   ReadMNIST(10000,784,ar);
-	for(unsigned int i=0; i<2; i++) {
-		for(unsigned int j=0; i<ar.at(i).size(); j++) {
-			printf("%f",ar.at(0).at(i));
+  cout << "test akfôka :" << ar.at(0).size() << endl;
+	for(unsigned int i=0; i<1; i++) {
+		for(unsigned int j=0; j<ar.at(i).size(); j++) {
+				printf("%f",ar.at(i).at(j));
+				//cout << ar.at(i).at(j) << " ";				
 		}
+		cout << endl;;
 	}
 }
 
 //Programme principal
 int main(int argc, char* argv[]) {
-	testOutputInFile();
-	testSaveNetwork();
+	testMNISTreader();
 	return 0;
 }
