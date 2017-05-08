@@ -5,11 +5,13 @@ NNetwork::NNetwork(vector<Layer> Layers)
 	this->Layers = Layers;
 }
 
-NNetwork(int typeID, vector<int> sizeLayers)
+NNetwork::NNetwork(vector<int>& sizeLayers, double sigma)
 {
-	this->Layers.push_back(Layer(sizeLayers.at(0),sizeLayers.at(1));
-	for(unsigned i; i<sizeLayers.size(); i++) {
-		
+	this->Layers.push_back(Layer(sizeLayers.at(0),sizeLayers.at(0)));
+	for(unsigned int i=1; i<sizeLayers.size(); i++) {
+		int nben=sizeLayers.at(i-1);
+		int nbout=sizeLayers.at(i);
+		this->Layers.push_back(Layer(nben,nbout,true,1.0));
 	}
 }
 

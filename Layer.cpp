@@ -21,6 +21,60 @@ Layer::Layer(int& nben, int& nbout, vector<vector<double>>& weights, vector<doub
 	}
 }
 
+Layer::Layer(int& nben, int& nbout, bool randomizeGaussian, double sigma, vector<int>& functionsID, vector<vector<double>>& functionsParam) 
+{
+	this->nben=nben;
+	this->nbout=nbout;
+	this->weights = gsl_matrix_alloc (nbout, nben);
+	for(int j=0; j<nbout; j++) {
+		for(int k=0; k<nben; k++) {
+			if(j==k) {
+				gsl_matrix_set (this->weights, j, k, 1);
+			} else {
+				gsl_matrix_set (this->weights, j, k, 0);
+			}
+		}
+	}
+	this->bias=gsl_vector_alloc (nbout);
+	for(int i=0; i<nbout; i++) {
+		gsl_vector_set (this->bias, i, 0);
+	}
+	this->functionsID=functionsID;
+	this->functionsParam=functionsParam;
+	if(randomizeGaussian) {
+		this->randomizeGaussian(sigma);
+	}
+	if(randomizeGaussian) {
+		this->randomizeGaussian(sigma);
+	}
+}
+
+Layer::Layer(int& nben, int& nbout, bool randomizeGaussian, double sigma)
+{
+		this->nben=nben;
+	this->nbout=nbout;
+	this->weights = gsl_matrix_alloc (nbout, nben);
+	for(int j=0; j<nbout; j++) {
+		for(int k=0; k<nben; k++) {
+			if(j==k) {
+				gsl_matrix_set (this->weights, j, k, 1);
+			} else {
+				gsl_matrix_set (this->weights, j, k, 0);
+			}
+		}
+	}
+	this->bias=gsl_vector_alloc (nbout);
+	for(int i=0; i<nbout; i++) {
+		gsl_vector_set (this->bias, i, 0);
+	}
+	for(int i=0; i<nbout; i++) {
+		this->functionsID.push_back(SIGMOID);
+	}
+	if(randomizeGaussian) {
+		this->randomizeGaussian(sigma);
+	}
+}
+
 Layer::Layer(int& nben, int& nbout) 
 { // for input layer
 	this->nben=nben;
@@ -70,7 +124,7 @@ void Layer::calculOuput(gsl_vector* preOutput, gsl_vector* output, gsl_vector* i
 {
 	for (int i = 0; i < this->nbout; i++) {
 		double z = gsl_vector_get(preOutput, i); //présortie
-		double a = calculFromFunction(i,z,input);//sortie //TODO à adapter pour RBF
+		double a = calculFromFunction(i,z,input);//sortie
 		gsl_vector_set (output, i, a);
 	}
 }
@@ -80,7 +134,12 @@ void Layer::calculOuput(gsl_matrix* preOutput, gsl_matrix* output, gsl_matrix* i
 	for(unsigned int j=0; j<preOutput->size1; j++) {
 		for(unsigned int k=0; k<preOutput->size2; k++) {
 			double z = gsl_matrix_get(preOutput, j, k); //présortie
-			double a = calculFromFunction(j,z,input);//sortie //TODO à adapter pour RBF
+			gsl_vector* tempInput = gsl_vector_alloc(input->size1);
+			for(unsigned int i=0; i<tempInput->size; i++) {
+				gsl_vector_set(tempInput, i, gsl_matrix_get(input, i, k));
+			}
+			double a = calculFromFunction(j,z,tempInput);//sortie //TODO à adapter pour RBF
+			gsl_vector_free(tempInput);
 			gsl_matrix_set (output, j, k, a);
 		}
 	}
@@ -91,34 +150,6 @@ void Layer::calculDelta(gsl_vector* en, gsl_vector* delta, Layer nextLayer)
 }
 
 double Layer::calculFromFunction(int neuron, double& z, gsl_vector* input)
-{
-	vector<double> params;
-	if(this->functionsParam.size() >= 1) {
-			params = this->functionsParam.at(neuron);
-	}
-	switch (functionsID.at(neuron)) {
-		case ID :
-			return z;
-			break;
-		case SIGMOID :
-			return 1.f /(1+gsl_sf_exp(-z));
-			break;
-		case SIGMOIDP :
-			return 1.f /(1+gsl_sf_exp(-params.at(0)*z));
-			break;
-		case TANH : 
-			return (gsl_sf_exp(z) - gsl_sf_exp(-z)) / (gsl_sf_exp(z) + gsl_sf_exp(-z));
-			break;
-		case GAUSSIAN :
-			return gsl_sf_exp(-params.at(0) * calculDistForRBF(params, input));
-			break;
-		default :
-			return z;
-			break;
-	}
-}
-
-double Layer::calculFromFunction(int neuron, double& z, gsl_matrix* input)
 {
 	vector<double> params;
 	if(this->functionsParam.size() >= 1) {
@@ -158,13 +189,8 @@ double Layer::calculDistForRBF(vector<double> params, gsl_vector* input)
 	double z = 0;
 	gsl_blas_ddot(diff, diff, &z);
 	
-	gsl_vector_free(diff);
+	gsl_vector_free(diff); //libére aussi center, ils pointent sur le mêm objet
 	return z;
-}
-
-double Layer::calculDistForRBF(vector<double> params, gsl_matrix* input)
-{
-	return 0; //TODO
 }
 
 gsl_vector* Layer::stdToGslVector(vector<double>& stdVector)
@@ -236,9 +262,26 @@ vector<vector<double>> Layer::gslToStdMatrixTrans(gsl_matrix* gslmatrix) //les v
 	return stdMatrix;
 }
 
-void Layer::randomizeGaussian(double moy, double sigma)
+void Layer::randomizeGaussian(double sigma)
 {
-	
+	const gsl_rng_type * T;
+	gsl_rng * r;
+
+	gsl_rng_env_setup();
+
+	T = gsl_rng_default;
+	r = gsl_rng_alloc (T);
+
+	for(unsigned int j=0; j<this->weights->size1; j++) {
+		for(unsigned int k=0; k<this->weights->size2; k++) {
+			gsl_matrix_set (this->weights, j, k, gsl_ran_gaussian (r, sigma));
+		}
+	}
+	for(unsigned int i=0; i<this->bias->size; i++) {
+		gsl_vector_set (this->bias, i, gsl_ran_gaussian (r, sigma));
+	}
+
+	gsl_rng_free (r);
 }
 
 int Layer::getNbEn()

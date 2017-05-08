@@ -173,7 +173,7 @@ void testMNISTreader()
 {
   vector<vector<double>> ar;
   ReadMNIST(10000,784,ar);
-  cout << "test akfôka :" << ar.at(0).size() << endl;
+  cout << "test size :" << ar.at(0).size() << endl;
 	for(unsigned int i=0; i<1; i++) {
 		for(unsigned int j=0; j<ar.at(i).size(); j++) {
 				printf("%f",ar.at(i).at(j));
@@ -183,8 +183,29 @@ void testMNISTreader()
 	}
 }
 
+void testRandomizeGaussian()
+{
+	int nben(5), nbout(4);
+	Layer layer(nben,nbout);
+	layer.randomizeGaussian(1.0);
+	layer.printLayerInfo();
+}
+
+void testGenAleaGaussianSigmoidNNetwork()
+{
+	vector<int> sizeLayers;
+	sizeLayers.push_back(4);
+	sizeLayers.push_back(2);
+	sizeLayers.push_back(10);
+	sizeLayers.push_back(150);
+	sizeLayers.push_back(2);
+	
+	NNetwork nono(sizeLayers, 10.0);
+	nono.printNetworkInfo();
+}
+
 //Programme principal
 int main(int argc, char* argv[]) {
-	testMNISTreader();
+	testGenAleaGaussianSigmoidNNetwork();
 	return 0;
 }

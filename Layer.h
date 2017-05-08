@@ -11,6 +11,9 @@
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_sf_exp.h>
+#include <gsl/gsl_rng.h>
+#include <gsl/gsl_randist.h>
+#include <gsl/gsl_cdf.h>
 //Spécification XML (define des id de fonctions)
 #include "xmlspec.h"
 
@@ -31,6 +34,8 @@ class Layer {
 		//Constructeurs de la classe
 		Layer(int& nben, int& nbout, vector<vector<double>>& weights, vector<double>& bias, vector<int>& functionsID, vector<vector<double>>& functionsParam);
 		Layer(int& nben, int& nbout, vector<vector<double>>& weights, vector<double>& bias); //avec des fonctions SIGMOID simples
+		Layer(int& nben, int& nbout, bool randomizeGaussian, double sigma, vector<int>& functionsID, vector<vector<double>>& functionsParam); // avec génération aléatoire
+		Layer(int& nben, int& nbout, bool randomizeGaussian, double sigma);
 		Layer(int& nben, int& nbout); // utilisé pour l'input layer
 		
 		//Fonction qui libère weights et bias
@@ -50,10 +55,8 @@ class Layer {
 		
 		//Fonction de calcul pour chaque neurone
 		double calculFromFunction(int neuron, double& z, gsl_vector* input);
-		double calculFromFunction(int neuron, double& z, gsl_matrix* input);
 		//Fonction utilisé dans le cas de réseaux RBF
 		double calculDistForRBF(vector<double> params, gsl_vector* input);
-		double calculDistForRBF(vector<double> params, gsl_matrix* input);
 		
 		//Fonctions de transformation de std::vector en objets gsl
 		gsl_vector* stdToGslVector(vector<double>& stdVector);
@@ -65,7 +68,7 @@ class Layer {
 		vector<vector<double>> gslToStdMatrixTrans(gsl_matrix* gslmatrix); //les vector sont en colonnes
 		
 		//Randomizer des valeurs de poids et de biais selon une loi normale
-		void randomizeGaussian(double moy, double sigma);
+		void randomizeGaussian(double sigma);
 		
 		//Fonctions qui retournent les attributs
 		int getNbEn();

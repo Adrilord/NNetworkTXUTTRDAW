@@ -25,7 +25,7 @@ class NNetwork {
 	public :
 		//Constructeur de la classe
 		NNetwork(vector<Layer> Layers);
-		NNetwork(int typeID, vector<int> sizeLayers);
+		NNetwork(vector<int>& sizeLayers, double sigma); //avec SIGMOID et génération aléa
 		
 		//Destructeur
 		~NNetwork();
@@ -37,7 +37,7 @@ class NNetwork {
 		vector<vector<double>> calculOuput(vector<vector<double>> input);
 		
 		//~ NNetwork trainNNetwork(vector<double> input);
-		//~ NNetwork trainNNetwork(vector<double> input);
+		//~ NNetwork trainNNetwork(vector<vector<double>> input);
 		
 		//Fonction qui retourne les attributs
 		vector<Layer> getLayers();
