@@ -101,6 +101,66 @@ vector<vector<double>> NNetwork::calculOuput(vector<vector<double>> input)
 	return stdOuput;	
 }
 
+NNetwork NNetwork::trainNNetwork(vector<double> input, vector<double> expectedOutput, int costID) 
+{
+	//CREATION
+	gsl_vector* gslInput = this->Layers.at(0).stdToGslVector(input);  //TODO accéder à la fonction sans objet ???
+	gsl_vector* gslExpectedOutput = this->Layers.at(0).stdToGslVector(expectedOutput);  //TODO accéder à la fonction sans objet ???
+	gsl_vector* preOutputs[this->Layers.size()];
+	gsl_vector* outputs[this->Layers.size()];
+	for(unsigned int i=0; i<this->Layers.size(); i++) {
+		preOutputs[i] = gsl_vector_alloc(this->Layers.at(i).getNbOut());
+		outputs[i] = gsl_vector_alloc(this->Layers.at(i).getNbOut());
+	}
+	//CALCULATION
+	gsl_blas_dcopy(gslInput, preOutputs[0]);
+	gsl_blas_dcopy(gslInput, outputs[0]);
+	for(unsigned int i=1; i<this->Layers.size()-1; i++) { //i=0 est la couche input 
+		this->Layers.at(i).calculOuput(preOutputs[i], outputs[i], outputs[i-1]);
+		this->Layers.at(i+1).calculPreOutput(outputs[i], preOutputs[i+1]);
+	}
+	unsigned int i=this->Layers.size()-1;
+	this->Layers.at(i).calculOuput(preOutputs[i], outputs[i], outputs[i-1]);
+	vector<double> stdOuput = this->Layers.at(0).gslToStdVector(outputs[i]);  //TODO accéder à la fonction sans objet ???
+	//BACKPROPAGATION -> ERRORS
+	gsl_vector* errors[this->Layers.size()];
+	errors[this->Layers.size()-1] = calculCostDerivate(outputs[this->Layers.size()-1], gslExepctedOutput, costID);
+	gsl_vector_mul(errors[this->Layers.size()-1], this->Layers.at(0). //TODO finir cette ligne //TODO accéder à la fonction sans objet ???
+	for(unsigned int l=this->Layers.size()-2; l>=0; l++) {
+		
+	}
+	//DESTRUCTION
+	gsl_vector_free(gslInput);
+	gsl_vector_free(gslExepctedOutput);
+	for(unsigned int i=0; i<this->Layers.size(); i++) {
+		gsl_vector_free(preOutputs[i]);
+		gsl_vector_free(outputs[i]);
+		gsl_vector_free(errors[i]);
+	}
+	//RETURNATION
+	return stdOuput;
+}
+
+gsl_vector* calculCostDerivate(gsl_vector* finalOuput, gsl_vector* expectedOutput, int costID)
+{
+	gsl_vector* result = gsl_vector_alloc(expectedOutput.size);
+	switch (costID) {
+		case QUADRATICCOST :
+			gsl_blas_dcopy(expectedOutput, result);
+			gsl_vector_sub(result,finalOuput);
+			return result;
+			break;
+		/*case CROSSENTROPY :
+			return ;
+			break;*/
+		default :
+			gsl_blas_dcopy(expectedOutput, result);
+			gsl_vector_sub(result,finalOuput);
+			return result;
+			break;
+	}
+}
+
 vector<Layer> NNetwork::getLayers() 
 {
 	return this->Layers;

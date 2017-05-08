@@ -177,6 +177,25 @@ double Layer::calculFromFunction(int neuron, double& z, gsl_vector* input)
 	}
 }
 
+double calculFromFunctionDerivate(int neuron, double& z /*, gsl_vector */)
+{
+	vector<double> params;
+	if(this->functionsParam.size() >= 1) {
+			params = this->functionsParam.at(neuron);
+	}
+	switch (functionsID.at(neuron)) {
+		case SIGMOID :
+			return gsl_sf_exp(-z) /((1+gsl_sf_exp(-z))*(1+gsl_sf_exp(-z)));
+			break;
+		case SIGMOIDP :
+			return (params.at(0)* gsl_sf_exp(-params.at(0)*z)) /((1+gsl_sf_exp(-params.at(0)*z))*(1+gsl_sf_exp(-params.at(0)*z)));
+			break;
+		default :
+			return z;
+			break;
+	}
+}
+
 double Layer::calculDistForRBF(vector<double> params, gsl_vector* input)
 {
 	gsl_vector* center = gsl_vector_alloc(input->size);

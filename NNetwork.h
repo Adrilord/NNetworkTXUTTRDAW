@@ -16,6 +16,9 @@
 
 using namespace std;
 
+#define QUADRATICCOST 0
+#define CROSSENTROPY 1
+
 //Classe réprésentant le réseau neuronale comme un ensemble de couche
 //de neurones
 class NNetwork {
@@ -36,8 +39,10 @@ class NNetwork {
 		//pour plusieurs inputs
 		vector<vector<double>> calculOuput(vector<vector<double>> input);
 		
-		//~ NNetwork trainNNetwork(vector<double> input);
-		//~ NNetwork trainNNetwork(vector<vector<double>> input);
+		NNetwork trainNNetwork(vector<double> input, vector<double> expectedOutput, int costID);
+		//~ NNetwork trainNNetwork(vector<vector<double>> input, vector<vector<double>> expectedOutput);
+		
+		gsl_vector* calculCostDerivate(gsl_vector* finalOuput, gsl_vector* expectedOutput, int costID);
 		
 		//Fonction qui retourne les attributs
 		vector<Layer> getLayers();

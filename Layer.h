@@ -55,6 +55,8 @@ class Layer {
 		
 		//Fonction de calcul pour chaque neurone
 		double calculFromFunction(int neuron, double& z, gsl_vector* input);
+		double calculFromFunctionDerivate(int neuron, double& z /*, gsl_vector  input*/); // for the backpropagation algorithm
+		double calculFromFunctionDerivate(gsl_vector* z, /*, gsl_vector  input*/); // for the backpropagation algorithm
 		//Fonction utilisé dans le cas de réseaux RBF
 		double calculDistForRBF(vector<double> params, gsl_vector* input);
 		
