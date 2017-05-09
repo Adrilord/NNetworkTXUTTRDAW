@@ -47,27 +47,16 @@ class Layer {
 		void calculPreOutput(gsl_matrix* input, gsl_matrix* preOutput); // plusieurs inputs à la fois
 		//pour obtenir output = functionOfNeurons ( preOutput, input )
 		//où input intervient dans les réseaux RBF notamment
-		void calculOuput(gsl_vector* preOutput, gsl_vector* output, gsl_vector* input);
-		void calculOuput(gsl_matrix* preOutput, gsl_matrix* output, gsl_matrix* input); // plusieurs inputs à la fois
+		void calculOutput(gsl_vector* preOutput, gsl_vector* output, gsl_vector* input);
+		void calculOutput(gsl_matrix* preOutput, gsl_matrix* output, gsl_matrix* input); // plusieurs inputs à la fois
+		void calculDerivateOutput(gsl_vector* preOutput, gsl_vector* output);  // for the backpropagation algorithm
 		
-		//TODO Fonction de calcul de backwarding
-		void calculDelta(gsl_vector* en, gsl_vector* delta, Layer nextLayer); //backward propagation
 		
 		//Fonction de calcul pour chaque neurone
 		double calculFromFunction(int neuron, double& z, gsl_vector* input);
 		double calculFromFunctionDerivate(int neuron, double& z /*, gsl_vector  input*/); // for the backpropagation algorithm
-		double calculFromFunctionDerivate(gsl_vector* z, /*, gsl_vector  input*/); // for the backpropagation algorithm
 		//Fonction utilisé dans le cas de réseaux RBF
 		double calculDistForRBF(vector<double> params, gsl_vector* input);
-		
-		//Fonctions de transformation de std::vector en objets gsl
-		gsl_vector* stdToGslVector(vector<double>& stdVector);
-		gsl_matrix* stdToGslMatrix(vector<vector<double>>& stdMatrix); //les vector sont en lignes
-		gsl_matrix* stdToGslMatrixTrans(vector<vector<double>>& stdMatrix); //les vector sont en colonnes
-		//Fonctions de transformation d'objets gsl en std::vector
-		vector<double> gslToStdVector(gsl_vector* gslvector);
-		vector<vector<double>> gslToStdMatrix(gsl_matrix* gslmatrix); //les vector sont en lignes
-		vector<vector<double>> gslToStdMatrixTrans(gsl_matrix* gslmatrix); //les vector sont en colonnes
 		
 		//Randomizer des valeurs de poids et de biais selon une loi normale
 		void randomizeGaussian(double sigma);
@@ -80,8 +69,25 @@ class Layer {
 		vector<int> getFunctionsID();
 		vector<vector<double>> getFunctionsParam();
 		
+		//Calcul de correction
+		void calculDelta(gsl_vector* currentError, gsl_vector* previousError);
+		
+		//Fonctions de correction des poids et des biais
+		void correctBias(gsl_vector* correction);
+		void correctWeights(gsl_matrix* correction);
+		
 		//Affichage des informations (valeurs des attributs) sur la
 		//sortie standard
 		void printLayerInfo();
 };
+
+//Fonctions de transformation de std::vector en objets gsl
+gsl_vector* stdToGslVector(vector<double>& stdVector);
+gsl_matrix* stdToGslMatrix(vector<vector<double>>& stdMatrix); //les vector sont en lignes
+gsl_matrix* stdToGslMatrixTrans(vector<vector<double>>& stdMatrix); //les vector sont en colonnes
+//Fonctions de transformation d'objets gsl en std::vector
+vector<double> gslToStdVector(gsl_vector* gslvector);
+vector<vector<double>> gslToStdMatrix(gsl_matrix* gslmatrix); //les vector sont en lignes
+vector<vector<double>> gslToStdMatrixTrans(gsl_matrix* gslmatrix); //les vector sont en colonnes
+
 #endif

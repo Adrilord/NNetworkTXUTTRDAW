@@ -4,7 +4,7 @@ Layer::Layer(int& nben, int& nbout, vector<vector<double>>& weights, vector<doub
 {
 	this->nben=nben;
 	this->nbout=nbout;
-	this->weights=this->stdToGslMatrix(weights);
+	this->weights=stdToGslMatrix(weights);
 	this->bias=stdToGslVector(bias);
 	this->functionsID=functionsID;
 	this->functionsParam=functionsParam;
@@ -14,7 +14,7 @@ Layer::Layer(int& nben, int& nbout, vector<vector<double>>& weights, vector<doub
 { //with simple sigmoïd functions
 	this->nben=nben;
 	this->nbout=nbout;
-	this->weights=this->stdToGslMatrix(weights);
+	this->weights=stdToGslMatrix(weights);
 	this->bias=stdToGslVector(bias);
 	for(int i=0; i<nbout; i++) {
 		this->functionsID.push_back(SIGMOID);
@@ -120,7 +120,7 @@ void Layer::calculPreOutput(gsl_matrix* input, gsl_matrix* preOutput)
 	gsl_blas_dgemm (CblasNoTrans, CblasNoTrans, 1.f, this->weights, input, 1, preOutput);
 }
 
-void Layer::calculOuput(gsl_vector* preOutput, gsl_vector* output, gsl_vector* input)
+void Layer::calculOutput(gsl_vector* preOutput, gsl_vector* output, gsl_vector* input)
 {
 	for (int i = 0; i < this->nbout; i++) {
 		double z = gsl_vector_get(preOutput, i); //présortie
@@ -129,7 +129,7 @@ void Layer::calculOuput(gsl_vector* preOutput, gsl_vector* output, gsl_vector* i
 	}
 }
 
-void Layer::calculOuput(gsl_matrix* preOutput, gsl_matrix* output, gsl_matrix* input)
+void Layer::calculOutput(gsl_matrix* preOutput, gsl_matrix* output, gsl_matrix* input)
 {
 	for(unsigned int j=0; j<preOutput->size1; j++) {
 		for(unsigned int k=0; k<preOutput->size2; k++) {
@@ -145,8 +145,13 @@ void Layer::calculOuput(gsl_matrix* preOutput, gsl_matrix* output, gsl_matrix* i
 	}
 }
 
-void Layer::calculDelta(gsl_vector* en, gsl_vector* delta, Layer nextLayer)
+void Layer::calculDerivateOutput(gsl_vector* preOutput, gsl_vector* output)
 {
+	for (int i = 0; i < this->nbout; i++) {
+		double z = gsl_vector_get(preOutput, i); //présortie
+		double a = calculFromFunctionDerivate(i,z);//sortie
+		gsl_vector_set (output, i, a);
+	}
 }
 
 double Layer::calculFromFunction(int neuron, double& z, gsl_vector* input)
@@ -177,7 +182,7 @@ double Layer::calculFromFunction(int neuron, double& z, gsl_vector* input)
 	}
 }
 
-double calculFromFunctionDerivate(int neuron, double& z /*, gsl_vector */)
+double Layer::calculFromFunctionDerivate(int neuron, double& z /*, gsl_vector */)
 {
 	vector<double> params;
 	if(this->functionsParam.size() >= 1) {
@@ -210,75 +215,6 @@ double Layer::calculDistForRBF(vector<double> params, gsl_vector* input)
 	
 	gsl_vector_free(diff); //libére aussi center, ils pointent sur le mêm objet
 	return z;
-}
-
-gsl_vector* Layer::stdToGslVector(vector<double>& stdVector)
-{
-	gsl_vector* gslvector = gsl_vector_alloc(stdVector.size());
-	for(unsigned int i=0; i<stdVector.size(); i++) {
-			gsl_vector_set (gslvector, i, stdVector.at(i));
-	}
-	return gslvector;
-}
-
-
-gsl_matrix* Layer::stdToGslMatrix(vector<vector<double>>& stdMatrix) //les vector sont en ligne
-{
-	gsl_matrix* gslmatrix = gsl_matrix_alloc (stdMatrix.size(), stdMatrix.at(0).size());
-	for(unsigned int j=0; j<stdMatrix.size(); j++) {
-		for(unsigned int k=0; k<stdMatrix.at(j).size(); k++) {
-				gsl_matrix_set (gslmatrix, j, k, stdMatrix.at(j).at(k));
-			}
-	}
-	return gslmatrix;
-}
-
-gsl_matrix* Layer::stdToGslMatrixTrans(vector<vector<double>>& stdMatrix) //les vector sont en colonnes
-{
-	gsl_matrix* gslmatrix = gsl_matrix_alloc (stdMatrix.at(0).size(), stdMatrix.size());
-	for(unsigned int k=0; k<stdMatrix.size(); k++) {
-		for(unsigned int j=0; j<stdMatrix.at(k).size(); j++) {
-				gsl_matrix_set (gslmatrix, j, k, stdMatrix.at(k).at(j));
-			}
-	}
-	return gslmatrix;
-}
-
-
-vector<double> Layer::gslToStdVector(gsl_vector* gslvector)
-{
-	vector<double> stdVector;
-	for(unsigned int i=0; i<gslvector->size; i++) {
-		stdVector.push_back(gsl_vector_get(gslvector, i));
-	}
-	return stdVector;
-}
-
-
-vector<vector<double>> Layer::gslToStdMatrix(gsl_matrix* gslmatrix) //les vector sont en lignes
-{
-	vector<vector<double>> stdMatrix;
-	for(unsigned int j=0; j<gslmatrix->size1; j++) {
-		vector<double> lign;
-		for(unsigned int k=0; k<gslmatrix->size2; k++) {
-				lign.push_back(gsl_matrix_get(gslmatrix, j, k));
-		}
-		stdMatrix.push_back(lign);
-	}
-	return stdMatrix;
-}
-
-vector<vector<double>> Layer::gslToStdMatrixTrans(gsl_matrix* gslmatrix) //les vector sont en colonnes
-{
-	vector<vector<double>> stdMatrix;
-	for(unsigned int k=0; k<gslmatrix->size2; k++) {
-		vector<double> column;
-		for(unsigned int j=0; j<gslmatrix->size1; j++) {
-				column.push_back(gsl_matrix_get(gslmatrix, j, k));
-		}
-		stdMatrix.push_back(column);
-	}
-	return stdMatrix;
 }
 
 void Layer::randomizeGaussian(double sigma)
@@ -333,6 +269,22 @@ vector<vector<double>> Layer::getFunctionsParam()
 	return this->functionsParam;
 }
 
+void Layer::calculDelta(gsl_vector* currentError, gsl_vector* previousError)
+{
+	gsl_vector_set_zero(currentError);
+	gsl_blas_dgemv(CblasTrans, 1.f, this->weights, previousError, 1.f, currentError);
+}
+
+void Layer::correctBias(gsl_vector* correction) 
+{
+	gsl_vector_sub(this->bias,correction);
+}
+
+void Layer::correctWeights(gsl_matrix* correction) 
+{
+	gsl_matrix_sub(this->weights,correction);
+}
+
 void Layer::printLayerInfo()
 {
 	cout << "nben : " << this->nben << " nbout : " << this->nbout << endl;
@@ -358,4 +310,71 @@ void Layer::printLayerInfo()
 		}
 		cout << endl;
 	}
+}
+
+gsl_vector* stdToGslVector(vector<double>& stdVector)
+{
+	gsl_vector* gslvector = gsl_vector_alloc(stdVector.size());
+	for(unsigned int i=0; i<stdVector.size(); i++) {
+			gsl_vector_set (gslvector, i, stdVector.at(i));
+	}
+	return gslvector;
+}
+
+gsl_matrix* stdToGslMatrix(vector<vector<double>>& stdMatrix) //les vector sont en ligne
+{
+	gsl_matrix* gslmatrix = gsl_matrix_alloc (stdMatrix.size(), stdMatrix.at(0).size());
+	for(unsigned int j=0; j<stdMatrix.size(); j++) {
+		for(unsigned int k=0; k<stdMatrix.at(j).size(); k++) {
+				gsl_matrix_set (gslmatrix, j, k, stdMatrix.at(j).at(k));
+			}
+	}
+	return gslmatrix;
+}
+
+gsl_matrix* stdToGslMatrixTrans(vector<vector<double>>& stdMatrix) //les vector sont en colonnes
+{
+	gsl_matrix* gslmatrix = gsl_matrix_alloc (stdMatrix.at(0).size(), stdMatrix.size());
+	for(unsigned int k=0; k<stdMatrix.size(); k++) {
+		for(unsigned int j=0; j<stdMatrix.at(k).size(); j++) {
+				gsl_matrix_set (gslmatrix, j, k, stdMatrix.at(k).at(j));
+			}
+	}
+	return gslmatrix;
+}
+
+
+vector<double> gslToStdVector(gsl_vector* gslvector)
+{
+	vector<double> stdVector;
+	for(unsigned int i=0; i<gslvector->size; i++) {
+		stdVector.push_back(gsl_vector_get(gslvector, i));
+	}
+	return stdVector;
+}
+
+vector<vector<double>> gslToStdMatrix(gsl_matrix* gslmatrix) //les vector sont en lignes
+{
+	vector<vector<double>> stdMatrix;
+	for(unsigned int j=0; j<gslmatrix->size1; j++) {
+		vector<double> lign;
+		for(unsigned int k=0; k<gslmatrix->size2; k++) {
+				lign.push_back(gsl_matrix_get(gslmatrix, j, k));
+		}
+		stdMatrix.push_back(lign);
+	}
+	return stdMatrix;
+}
+
+vector<vector<double>> gslToStdMatrixTrans(gsl_matrix* gslmatrix) //les vector sont en colonnes
+{
+	vector<vector<double>> stdMatrix;
+	for(unsigned int k=0; k<gslmatrix->size2; k++) {
+		vector<double> column;
+		for(unsigned int j=0; j<gslmatrix->size1; j++) {
+				column.push_back(gsl_matrix_get(gslmatrix, j, k));
+		}
+		stdMatrix.push_back(column);
+	}
+	return stdMatrix;
 }

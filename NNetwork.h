@@ -35,14 +35,14 @@ class NNetwork {
 		
 		//Calculs de Forwarding
 		//pour 1 input
-		vector<double> calculOuput(vector<double> input);
+		vector<double> calculOutput(vector<double> input);
 		//pour plusieurs inputs
-		vector<vector<double>> calculOuput(vector<vector<double>> input);
+		vector<vector<double>> calculOutput(vector<vector<double>> input);
 		
-		NNetwork trainNNetwork(vector<double> input, vector<double> expectedOutput, int costID);
+		void trainNNetwork(vector<double> input, vector<double> expectedOutput, int costID, const double learningRate);
 		//~ NNetwork trainNNetwork(vector<vector<double>> input, vector<vector<double>> expectedOutput);
 		
-		gsl_vector* calculCostDerivate(gsl_vector* finalOuput, gsl_vector* expectedOutput, int costID);
+		gsl_vector* calculCostDerivate(gsl_vector* finalOutput, gsl_vector* expectedOutput, int costID);
 		
 		//Fonction qui retourne les attributs
 		vector<Layer> getLayers();

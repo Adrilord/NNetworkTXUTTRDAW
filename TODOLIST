@@ -5,5 +5,7 @@ permettre l'écriture des outputs dans un fichier --> done
 permettre la lecture d'un fichier MNIST --> done
 génération automatique de Réseau de Neurone --> done
 RBF with matrices --> done (mais à tester)
-commencer la partie apprentissage --> to begin before 15/5
+commencer la partie apprentissage (trainNetwork avec gsl_vector) --> done (to check)
+testMNISTNetwork ->
+trainNetwork avec gsl_matrix ->
 documentation --> in constant progress

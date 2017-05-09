@@ -34,7 +34,7 @@ void testLayer ()
 	gsl_vector* preout = gsl_vector_alloc(nbout);
 	gsl_vector* out = gsl_vector_alloc(nbout);
 	tlayer.calculPreOutput(en,preout);
-	tlayer.calculOuput(preout,out,NULL);
+	tlayer.calculOutput(preout,out,NULL);
 	showGslVector(out);
 }
 
@@ -82,7 +82,7 @@ void testForwardingVector()
 	input.push_back(2);
 
 	//Calcul et test de l'output
-	vector<double> output=nono.calculOuput(input);
+	vector<double> output=nono.calculOutput(input);
 	for(unsigned int i=0; i<output.size(); i++) {
 		cout << "OUTPUT" << endl;
 		cout << output.at(i) << endl;
@@ -116,7 +116,7 @@ void testForwardingMatrix()
 	input.push_back(input2);
 
 	//Calcul et test de l'output
-	vector<vector<double>> output=nono.calculOuput(input);
+	vector<vector<double>> output=nono.calculOutput(input);
 	for(unsigned int j=0; j<output.size(); j++) {
 		cout << "OUTPUT" << endl;
 		for(unsigned int k=0; k<output.at(j).size(); k++) {
@@ -144,7 +144,7 @@ void testForwardingMatrixFromFile()
 
 
 	//Calcul et test de l'output
-	vector<vector<double>> output=nono.calculOuput(inputs);
+	vector<vector<double>> output=nono.calculOutput(inputs);
 	for(unsigned int j=0; j<output.size(); j++) {
 		cout << "OUTPUT" << endl;
 		for(unsigned int k=0; k<output.at(j).size(); k++) {
@@ -164,7 +164,7 @@ void testOutputInFile()
 	vector<vector<double>> inputs(getInputsFromFile("testInputFile"));
 	
 	//Construction de l'output
-	vector<vector<double>> outputs=nono.calculOuput(inputs);
+	vector<vector<double>> outputs=nono.calculOutput(inputs);
 	
 	putOutputToFile("testOutputFile", outputs);
 }
@@ -204,8 +204,16 @@ void testGenAleaGaussianSigmoidNNetwork()
 	nono.printNetworkInfo();
 }
 
+void testMNISTNetwork()
+{
+	vector<int> sizeLayers;
+	sizeLayers.push_back(784);
+	sizeLayers.push_back(15);
+	sizeLayers.push_back(10);
+}
+
 //Programme principal
 int main(int argc, char* argv[]) {
-	testGenAleaGaussianSigmoidNNetwork();
+	testMNISTreader();
 	return 0;
 }
