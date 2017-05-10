@@ -6,6 +6,7 @@ permettre la lecture d'un fichier MNIST --> done
 génération automatique de Réseau de Neurone --> done
 RBF with matrices --> done (mais à tester)
 commencer la partie apprentissage (trainNetwork avec gsl_vector) --> done (to check)
-testMNISTNetwork ->
+testMNISTNetworkIni -> done
+vector<vector<double>> to bmp ->
 trainNetwork avec gsl_matrix ->
 documentation --> in constant progress

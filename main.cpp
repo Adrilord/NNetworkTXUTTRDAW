@@ -210,10 +210,29 @@ void testMNISTNetwork()
 	sizeLayers.push_back(784);
 	sizeLayers.push_back(15);
 	sizeLayers.push_back(10);
+	
+	NNetwork nono(sizeLayers, 1.0);
+	
+		
+	vector<vector<double>> ar;
+	ReadMNIST(10000,784,ar);
+	vector<double> input;
+	for(unsigned int i=0; i<1; i++) {
+		for(unsigned int j=0; j<ar.at(i).size(); j++) {
+				input.push_back(ar.at(i).at(j));				
+		}
+	}
+	cout << "test 1 :" <<  input.size() << endl;
+	//Calcul et test de l'output
+	vector<double> output=nono.calculOutput(input);
+	cout << "OUTPUT" << endl;
+	for(unsigned int i=0; i<output.size(); i++) {
+		cout << output.at(i) << endl;
+	}
 }
 
 //Programme principal
 int main(int argc, char* argv[]) {
-	testMNISTreader();
+	testMNISTNetwork();
 	return 0;
 }
