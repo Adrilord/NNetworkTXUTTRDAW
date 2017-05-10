@@ -154,6 +154,17 @@ void Layer::calculDerivateOutput(gsl_vector* preOutput, gsl_vector* output)
 	}
 }
 
+void Layer::calculDerivateOutput(gsl_matrix* preOutput, gsl_matrix* output)
+{
+	for(unsigned int j=0; j<preOutput->size1; j++) {
+		for(unsigned int k=0; k<preOutput->size2; k++) {
+			double z = gsl_matrix_get(preOutput, j, k); //présortie
+			double a = calculFromFunctionDerivate(j,z);//sortie //TODO à adapter pour RBF
+			gsl_matrix_set (output, j, k, a);
+		}
+	}	
+}
+
 double Layer::calculFromFunction(int neuron, double& z, gsl_vector* input)
 {
 	vector<double> params;
@@ -273,6 +284,12 @@ void Layer::calculDelta(gsl_vector* currentError, gsl_vector* previousError)
 {
 	gsl_vector_set_zero(currentError);
 	gsl_blas_dgemv(CblasTrans, 1.f, this->weights, previousError, 1.f, currentError);
+}
+
+void Layer::calculDelta(gsl_matrix* currentError, gsl_matrix* previousError)
+{
+	gsl_matrix_set_zero(currentError);
+	gsl_blas_dgemm (CblasTrans, CblasNoTrans, 1.f, this->weights, previousError, 1.f, currentError);
 }
 
 void Layer::correctBias(gsl_vector* correction) 

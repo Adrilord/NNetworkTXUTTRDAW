@@ -15,9 +15,15 @@
 #include "xmlspec.h"
 #include "xmlparser.h"
 
+/*Fonction qui lit un fichier texte avec des valeurs séparés par un
+ * espace et des retour \n, une ligne correspondant à un input
+ * et qui retourne ces valeurs sour le format vector<vector<double>> */
 vector<vector<double>> getInputsFromFile(string filename);
 
+//Fonction qui écrit les valeurs d'un vector<vector<double>> dans fichier
 void putOutputToFile(string filename, vector<vector<double>> outputs);
+
+//Fonctions pour la lecture d'un fichier MNIST de test
 
 int ReverseInt (int i);
 

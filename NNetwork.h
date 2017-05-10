@@ -16,10 +16,11 @@
 
 using namespace std;
 
+//Définitions pour le calcul de gradient de coût
 #define QUADRATICCOST 0
 #define CROSSENTROPY 1
 
-//Classe réprésentant le réseau neuronale comme un ensemble de couche
+//Classe réprésentant le réseau neuronal comme un ensemble de couche
 //de neurones
 class NNetwork {
 	private :
@@ -39,10 +40,14 @@ class NNetwork {
 		//pour plusieurs inputs
 		vector<vector<double>> calculOutput(vector<vector<double>> input);
 		
+		//Fonctions pour l'apprentissages implémentant l'algorithme de rétropropagation d'erreurs
 		void trainNNetwork(vector<double> input, vector<double> expectedOutput, int costID, const double learningRate);
-		//~ NNetwork trainNNetwork(vector<vector<double>> input, vector<vector<double>> expectedOutput);
+		void trainNNetwork(vector<vector<double>> input, vector<vector<double>> expectedOutput, int costID, const double learningRate);
 		
+		//Fonctions pour calculer le gradient du coût (pour l'apprentissage) 
+		//pour les variables de sorties
 		gsl_vector* calculCostDerivate(gsl_vector* finalOutput, gsl_vector* expectedOutput, int costID);
+		gsl_matrix* calculCostDerivate(gsl_matrix* finalOutput, gsl_matrix* expectedOutput, int costID);
 		
 		//Fonction qui retourne les attributs
 		vector<Layer> getLayers();

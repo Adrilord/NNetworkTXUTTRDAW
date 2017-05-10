@@ -50,6 +50,7 @@ class Layer {
 		void calculOutput(gsl_vector* preOutput, gsl_vector* output, gsl_vector* input);
 		void calculOutput(gsl_matrix* preOutput, gsl_matrix* output, gsl_matrix* input); // plusieurs inputs à la fois
 		void calculDerivateOutput(gsl_vector* preOutput, gsl_vector* output);  // for the backpropagation algorithm
+		void calculDerivateOutput(gsl_matrix* preOutput, gsl_matrix* output);  // for the backpropagation algorithm
 		
 		
 		//Fonction de calcul pour chaque neurone
@@ -69,8 +70,9 @@ class Layer {
 		vector<int> getFunctionsID();
 		vector<vector<double>> getFunctionsParam();
 		
-		//Calcul de correction
+		//Calcul de correction pour l'apprentissage
 		void calculDelta(gsl_vector* currentError, gsl_vector* previousError);
+		void calculDelta(gsl_matrix* currentError, gsl_matrix* previousError);
 		
 		//Fonctions de correction des poids et des biais
 		void correctBias(gsl_vector* correction);
