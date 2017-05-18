@@ -25,8 +25,11 @@ void putOutputToFile(string filename, vector<vector<double>> outputs);
 
 //Fonctions pour la lecture d'un fichier MNIST de test
 
+//Passe une valeur 32bit de BSM à MSB (ATTENTION il faudrait utiliser uint32_t)
 int ReverseInt (int i);
 
-void ReadMNIST(int NumberOfImages, int DataOfAnImage,vector<vector<double>> &arr);
+void ReadMNISTTrainingImages(int NumberOfImages, int DataOfAnImage,vector<vector<double>> &arr);
+
+void ReadMNISTTrainingLabels(int NumberOfItems, vector<double> &arr);
 
 #endif

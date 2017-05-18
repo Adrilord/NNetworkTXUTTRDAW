@@ -46,7 +46,7 @@ int ReverseInt (int i)
     return((int)ch1<<24)+((int)ch2<<16)+((int)ch3<<8)+ch4;
 }
 
-void ReadMNIST(int NumberOfImages, int DataOfAnImage,vector<vector<double>> &arr)
+void ReadMNISTTrainingImages(int NumberOfImages, int DataOfAnImage,vector<vector<double>> &arr)
 {
     arr.resize(NumberOfImages,vector<double>(DataOfAnImage));
     ifstream file("t10k-images.idx3-ubyte",ios::binary);
@@ -75,6 +75,27 @@ void ReadMNIST(int NumberOfImages, int DataOfAnImage,vector<vector<double>> &arr
                     arr[i][(n_rows*r)+c]= (double)temp;
                 }
             }
+        }
+    }
+}
+
+void ReadMNISTTrainingLabels(int NumberOfItems, vector<double> &arr)
+{
+    arr.resize(NumberOfItems,0);
+    ifstream file("train-labels.idx1-ubyte",ios::binary);
+    if (file.is_open())
+    {
+        int magic_number=0;
+        int n_items=0;
+        file.read((char*)&magic_number,sizeof(magic_number));
+        magic_number= ReverseInt(magic_number);
+        file.read((char*)&n_items,sizeof(n_items));
+        n_items= ReverseInt(n_items);
+        for(int i=0;i<n_items;++i)
+        {
+                    unsigned char temp=0;
+                    file.read((char*)&temp,sizeof(temp));
+                    arr[i]= (double)temp;
         }
     }
 }

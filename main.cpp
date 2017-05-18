@@ -4,6 +4,8 @@
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_sf_exp.h>
 #include <cstdio>
+#include <vector>
+#include <algorithm>
 #include "Layer.h"
 #include "NNetwork.h"
 #include "xmlparser.h"
@@ -172,7 +174,7 @@ void testOutputInFile()
 void testMNISTreader()
 {
   vector<vector<double>> ar;
-  ReadMNIST(10000,784,ar);
+  ReadMNISTTrainingImages(60000,784,ar);
   cout << "test size :" << ar.at(0).size() << endl;
 	for(unsigned int i=0; i<1; i++) {
 		for(unsigned int j=0; j<ar.at(i).size(); j++) {
@@ -215,7 +217,7 @@ void testMNISTNetwork()
 	
 		
 	vector<vector<double>> ar;
-	ReadMNIST(10000,784,ar);
+	ReadMNISTTrainingImages(60000,784,ar);
 	vector<double> input;
 	for(unsigned int i=0; i<1; i++) {
 		for(unsigned int j=0; j<ar.at(i).size(); j++) {
@@ -226,13 +228,28 @@ void testMNISTNetwork()
 	//Calcul et test de l'output
 	vector<double> output=nono.calculOutput(input);
 	cout << "OUTPUT" << endl;
+	int max_indice=0;
 	for(unsigned int i=0; i<output.size(); i++) {
 		cout << output.at(i) << endl;
+		if (output.at(i)>output.at(max_indice)) {
+			max_indice = i;
+		}
+	}
+	cout<<"Value: "<<max_indice<<endl;
+}
+
+void testMNISTreader2()
+{
+  vector<double> ar;
+  ReadMNISTTrainingLabels(60000,ar);
+  cout << "test size :" << ar.size() << endl;
+	for(unsigned int i=0; i<60000; i++) {
+		cout << ar.at(i) << endl;;
 	}
 }
 
 //Programme principal
 int main(int argc, char* argv[]) {
-	testMNISTNetwork();
+	testMNISTreader2();
 	return 0;
 }
