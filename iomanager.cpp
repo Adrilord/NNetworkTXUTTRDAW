@@ -99,7 +99,8 @@ void ReadMNISTTrainingLabels(int NumberOfItems, vector<double> &arr)
         }
     }
 }
-void extractingAMiniBatch(vector<vector<double>> &images, vector<double> &labels, 
+
+void extractingAMNISTMiniBatch(vector<vector<double>> &images, vector<double> &labels, 
 	vector<vector<double>> &minibatchimages, vector<double> &minibatchlabels, unsigned int batchsize)
 {	
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -116,4 +117,36 @@ void extractingAMiniBatch(vector<vector<double>> &images, vector<double> &labels
 		labels.erase (labels.begin()+indice);
 	}
 }
+
+void label2MNISTExpectedOutput(double &label, vector<double> &expectedOutput)
+{
+	for(int i=0; i<10; i++) {
+		expectedOutput.push_back(0);
+	}
+	expectedOutput.at(label)=1.f;
+}
+
+void label2MNISTExpectedOutput(vector<double> &labels, vector<vector<double>> &expectedOutputs)
+{
+	for(unsigned int i=0; i<labels.size(); i++) {
+		vector<double> expectedOutput;
+		for(int j=0; j<10; j++) {
+			expectedOutput.push_back(0);
+		}
+		expectedOutput.at(labels.at(i))=1.f;
+		expectedOutputs.push_back(expectedOutput);
+	}
+}
+
+//~ void outputToLabel(vector<double> &labels, vector<vector<double>> &expectedOutputs)
+//~ {
+	//~ for(unsigned int i=0; i<labels.size(); i++) {
+		//~ vector<double> expectedOutput;
+		//~ for(int j=0; j<10; j++) {
+			//~ expectedOutput.push_back(0);
+		//~ }
+		//~ expectedOutput.at(labels.at(i))=1.f;
+		//~ expectedOutputs.push_back(expectedOutput);
+	//~ }
+//~ }
 	

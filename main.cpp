@@ -258,7 +258,7 @@ void testBatch()
 	vector<double> minibatchlabels;
 	vector<vector<double>> minibatchimages;
 	
-	extractingAMiniBatch(images, labels, minibatchimages, minibatchlabels, 10);
+	extractingAMNISTMiniBatch(images, labels, minibatchimages, minibatchlabels, 10);
 	
 	for(unsigned int i=0; i<minibatchimages.size(); i++) {
 		cout << "image : " << endl;
@@ -270,8 +270,52 @@ void testBatch()
 	}
 }
 
+void testMNISTTraining()
+{
+	vector<int> sizeLayers;
+	sizeLayers.push_back(784);
+	sizeLayers.push_back(15);
+	sizeLayers.push_back(10);
+	
+	NNetwork nono(sizeLayers, 1.0);
+	
+	vector<double> labels;
+	ReadMNISTTrainingLabels(60000,labels);
+	vector<vector<double>> images;
+	ReadMNISTTrainingImages(60000,784,images);
+	
+	unsigned int sizeMiniBatch = 10;
+
+	while(images.size() > sizeMiniBatch)
+	{
+		vector<double> minibatchlabels;
+		vector<vector<double>> expectedOutput;
+		vector<vector<double>> actualOutput;
+		vector<vector<double>> minibatchimages;
+		extractingAMNISTMiniBatch(images, labels, minibatchimages, minibatchlabels, 10);
+		label2MNISTExpectedOutput(minibatchlabels, expectedOutput);
+		nono.trainNNetwork(minibatchimages, expectedOutput, QUADRATICCOST, 1.f);
+		actualOutput = nono.calculOutput(minibatchimages);
+		//~ cout << "labels result: " << endl;
+		//~ for(int i=0; i<expectedOutput.size(); i++) {
+			//~ for(int j=0; j<expectedOutput.at(i).size(); j++) {
+				//~ cout << expectedOutput.at(i).at(j) << " ";
+			//~ }
+		//~ }
+		//~ vector<int> max_indice=0;
+		//~ for(unsigned int i=0; i<ActualOutput.size(); i++) {
+			//~ cout << output.at(i) << endl;
+			//~ if (output.at(i)>output.at(max_indice)) {
+				//~ max_indice = i;
+			//~ }
+		//~ }
+		//~ cout<<"Value: "<<max_indice<<endl;
+		
+	}
+}
+
 //Programme principal
 int main(int argc, char* argv[]) {
-	testBatch();
+	testMNISTTraining();
 	return 0;
 }

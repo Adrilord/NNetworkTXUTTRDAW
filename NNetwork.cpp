@@ -132,13 +132,15 @@ void NNetwork::trainNNetwork(vector<double> input, vector<double> expectedOutput
 	errors[this->Layers.size()-1] = this->calculCostDerivate(outputs[this->Layers.size()-1], gslExpectedOutput, costID);
 	gsl_vector_mul(errors[this->Layers.size()-1], derivateOutputs[this->Layers.size()-1]);
 	//Backpropagation of the error
-	for(unsigned int l=this->Layers.size()-2; l>=0; l++) {
+	for(int l=this->Layers.size()-1; l>-1; l--) {
 		errors[l] = gsl_vector_alloc(this->Layers.at(l).getNbOut());
-		this->Layers.at(l).calculDelta(errors[l], errors[l+1]);
+		this->Layers.at(l+1).calculDelta(errors[l], errors[l+1]);
 		gsl_vector_mul(errors[l], derivateOutputs[l]);
 	}
 	//GRADIENT DESCENT (CORRECTIONS)
-	for(unsigned int l=this->Layers.size()-1; l>=1; l++) {
+	int l=this->Layers.size()-1;
+	while(l>1) {
+		l--;
 		//corretionWeights=learningRate*errors[l]*trans(outputs[l-1])
 		gsl_matrix* correctionWeights = gsl_matrix_alloc(errors[l]->size, outputs[l-1]->size);
 		gsl_matrix_set_zero(correctionWeights);
@@ -169,8 +171,8 @@ void NNetwork::trainNNetwork(vector<double> input, vector<double> expectedOutput
 void NNetwork::trainNNetwork(vector<vector<double>> input, vector<vector<double>> expectedOutput, int costID, const double learningRate)
 {
 	//CREATION
-	gsl_matrix* gslInput = stdToGslMatrix(input);  
-	gsl_matrix* gslExpectedOutput = stdToGslMatrix(expectedOutput);  
+	gsl_matrix* gslInput = stdToGslMatrixTrans(input); 
+	gsl_matrix* gslExpectedOutput = stdToGslMatrixTrans(expectedOutput); 
 	gsl_matrix* preOutputs[this->Layers.size()];
 	gsl_matrix* outputs[this->Layers.size()];
 	gsl_matrix* derivateOutputs[this->Layers.size()];
@@ -191,27 +193,28 @@ void NNetwork::trainNNetwork(vector<vector<double>> input, vector<vector<double>
 	unsigned int i=this->Layers.size()-1;
 	this->Layers.at(i).calculOutput(preOutputs[i], outputs[i], outputs[i-1]);
 	this->Layers.at(i).calculDerivateOutput(preOutputs[i], derivateOutputs[i]);
-	vector<vector<double>> stdOutput = gslToStdMatrix(outputs[i]);  
+	vector<vector<double>> stdOutput = gslToStdMatrixTrans(outputs[i]);  
 	//BACKPROPAGATION -> ERRORS
 	gsl_matrix* errors[this->Layers.size()];
 	//Output error
 	errors[this->Layers.size()-1] = this->calculCostDerivate(outputs[this->Layers.size()-1], gslExpectedOutput, costID);
 	gsl_matrix_mul_elements(errors[this->Layers.size()-1], derivateOutputs[this->Layers.size()-1]);
 	//Backpropagation of the error
-	for(unsigned int l=this->Layers.size()-2; l>=0; l++) {
+	for(int l=this->Layers.size()-2; l>-1; l--) {
 		errors[l] = gsl_matrix_alloc(this->Layers.at(l).getNbOut(),gslInput->size2);
-		this->Layers.at(l).calculDelta(errors[l], errors[l+1]);
+		this->Layers.at(l+1).calculDelta(errors[l], errors[l+1]);
 		gsl_matrix_mul_elements(errors[l], derivateOutputs[l]);
 	}
 	//GRADIENT DESCENT (CORRECTIONS)
-	for(unsigned int l=this->Layers.size()-1; l>=1; l++) {
+	int l=this->Layers.size()-1;
+	while(l>0) {
 		//corretionWeights=learningRate*(1/gslInput->size2)*sumx(vectorxof(errors[l])*trans(vectorxof(outputs[l-1]))
-		gsl_matrix* correctionWeights = gsl_matrix_alloc(errors[l]->size1, outputs[l-1]->size1);
+		gsl_matrix* correctionWeights = gsl_matrix_alloc(this->Layers.at(l).getNbOut(), this->Layers.at(l).getNbEn());
 		gsl_matrix_set_zero(correctionWeights);
 		for(unsigned int x=0; x<gslInput->size2; x++) {
 			gsl_vector* errorx = gsl_vector_alloc(errors[l]->size1);
 			gsl_vector* outputx = gsl_vector_alloc(outputs[l-1]->size1);
-			for(unsigned int i=0; i<errors[l]->size1; i++) {
+			for(unsigned int i=0; i<errors[l]->size2; i++) {
 				gsl_vector_set(errorx, i, gsl_matrix_get(errors[l],x,i));
 				gsl_vector_set(outputx, i, gsl_matrix_get(outputs[l-1],x,i));
 			}
@@ -227,7 +230,7 @@ void NNetwork::trainNNetwork(vector<vector<double>> input, vector<vector<double>
 		gsl_vector_set_zero(correctionBias);
 		for(unsigned int x=0; x<gslInput->size2; x++) {
 			gsl_vector* errorx = gsl_vector_alloc(errors[l]->size1);
-			for(unsigned int i=0; i<errors[l]->size1; i++) {
+			for(unsigned int i=0; i<errors[l]->size2; i++) {
 				gsl_vector_set(errorx, i, gsl_matrix_get(errors[l],x,i));
 			}
 			gsl_vector_add(correctionBias, errorx);
@@ -239,8 +242,8 @@ void NNetwork::trainNNetwork(vector<vector<double>> input, vector<vector<double>
 		//DESTRUCTION
 		gsl_matrix_free(correctionWeights);
 		gsl_vector_free(correctionBias);
+		l=l-1; // bug avec for
 	}
-	
 	//DESTRUCTION
 	gsl_matrix_free(gslInput);
 	gsl_matrix_free(gslExpectedOutput);

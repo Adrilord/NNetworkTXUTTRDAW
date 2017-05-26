@@ -34,7 +34,11 @@ void ReadMNISTTrainingImages(int NumberOfImages, int DataOfAnImage,vector<vector
 
 void ReadMNISTTrainingLabels(int NumberOfItems, vector<double> &arr);
 
-void extractingAMiniBatch(vector<vector<double>> &images, vector<double> &labels, 
+void extractingAMNISTMiniBatch(vector<vector<double>> &images, vector<double> &labels, 
 	vector<vector<double>> &minibatchimages, vector<double> &minibatchlabels, unsigned int batchsize);
+	
+void label2MNISTExpectedOutput(double &label, vector<double> &expectedOutput);
+
+void label2MNISTExpectedOutput(vector<double> &labels, vector<vector<double>> &expectedOutputs);
 
 #endif
