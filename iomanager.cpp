@@ -49,7 +49,7 @@ int ReverseInt (int i)
 void ReadMNISTTrainingImages(int NumberOfImages, int DataOfAnImage,vector<vector<double>> &arr)
 {
     arr.resize(NumberOfImages,vector<double>(DataOfAnImage));
-    ifstream file("t10k-images.idx3-ubyte",ios::binary);
+    ifstream file("train-images.idx3-ubyte",ios::binary);
     if (file.is_open())
     {
         int magic_number=0;
@@ -99,3 +99,21 @@ void ReadMNISTTrainingLabels(int NumberOfItems, vector<double> &arr)
         }
     }
 }
+void extractingAMiniBatch(vector<vector<double>> &images, vector<double> &labels, 
+	vector<vector<double>> &minibatchimages, vector<double> &minibatchlabels, unsigned int batchsize)
+{	
+	std::random_device rd;  //Will be used to obtain a seed for the random number engine
+    std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+    for(unsigned int i=0; i<batchsize; i++) {
+		std::uniform_int_distribution<> dis(1, images.size());
+		int indice = dis(gen) - 1 ;
+		//~ cout << "test indice " << indice << " test images.size() : " <<  images.size() << endl;
+		//~ auto biggest = std::max_element(std::begin(images.at(indice)), std::end(images.at(indice)));
+		//~ cout << "test max image value : " << *biggest << endl;
+		minibatchimages.push_back(images.at(indice));
+		minibatchlabels.push_back(labels.at(indice));
+		images.erase (images.begin()+indice);
+		labels.erase (labels.begin()+indice);
+	}
+}
+	

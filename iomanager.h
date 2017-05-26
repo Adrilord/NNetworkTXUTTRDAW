@@ -9,6 +9,8 @@
 #include <iostream>
 #include <tinyxml.h>
 #include <fstream>
+#include <random>
+#include <algorithm>
 //Librairies locales
 #include "NNetwork.h"
 #include "Layer.h"
@@ -31,5 +33,8 @@ int ReverseInt (int i);
 void ReadMNISTTrainingImages(int NumberOfImages, int DataOfAnImage,vector<vector<double>> &arr);
 
 void ReadMNISTTrainingLabels(int NumberOfItems, vector<double> &arr);
+
+void extractingAMiniBatch(vector<vector<double>> &images, vector<double> &labels, 
+	vector<vector<double>> &minibatchimages, vector<double> &minibatchlabels, unsigned int batchsize);
 
 #endif

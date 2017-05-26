@@ -176,10 +176,11 @@ void testMNISTreader()
   vector<vector<double>> ar;
   ReadMNISTTrainingImages(60000,784,ar);
   cout << "test size :" << ar.at(0).size() << endl;
-	for(unsigned int i=0; i<1; i++) {
+	for(unsigned int i=0; i<10; i++) {
+		cout << "image " << i << " : " << endl;
 		for(unsigned int j=0; j<ar.at(i).size(); j++) {
-				printf("%f",ar.at(i).at(j));
-				//cout << ar.at(i).at(j) << " ";				
+				//~ printf("%f",ar.at(i).at(j));
+				cout << ar.at(i).at(j) << " ";				
 		}
 		cout << endl;;
 	}
@@ -215,7 +216,6 @@ void testMNISTNetwork()
 	
 	NNetwork nono(sizeLayers, 1.0);
 	
-		
 	vector<vector<double>> ar;
 	ReadMNISTTrainingImages(60000,784,ar);
 	vector<double> input;
@@ -240,16 +240,38 @@ void testMNISTNetwork()
 
 void testMNISTreader2()
 {
-  vector<double> ar;
-  ReadMNISTTrainingLabels(60000,ar);
-  cout << "test size :" << ar.size() << endl;
-	for(unsigned int i=0; i<60000; i++) {
+	vector<double> ar;
+	ReadMNISTTrainingLabels(60000,ar);
+	cout << "test size :" << ar.size() << endl;
+	for(unsigned int i=0; i<60/*000*/; i++) {
 		cout << ar.at(i) << endl;;
+	}
+}
+
+void testBatch()
+{
+	vector<double> labels;
+	ReadMNISTTrainingLabels(60000,labels);
+	vector<vector<double>> images;
+	ReadMNISTTrainingImages(60000,784,images);
+	
+	vector<double> minibatchlabels;
+	vector<vector<double>> minibatchimages;
+	
+	extractingAMiniBatch(images, labels, minibatchimages, minibatchlabels, 10);
+	
+	for(unsigned int i=0; i<minibatchimages.size(); i++) {
+		cout << "image : " << endl;
+		for(unsigned int j=0; j<minibatchimages.at(i).size(); j++) {
+			cout << minibatchimages.at(i).at(j) << " ";
+		}
+		cout << endl;
+		cout << "label : " << endl << minibatchlabels.at(i) << endl;
 	}
 }
 
 //Programme principal
 int main(int argc, char* argv[]) {
-	testMNISTreader2();
+	testBatch();
 	return 0;
 }
