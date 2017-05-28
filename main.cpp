@@ -270,7 +270,96 @@ void testBatch()
 	}
 }
 
+//DONT WORK
+//Mini test de training
+void testMiniTraining()
+{
+	vector<int> sizeLayers;
+	sizeLayers.push_back(3);
+	sizeLayers.push_back(4);
+	sizeLayers.push_back(1);
+	
+	NNetwork nono(sizeLayers, 1.0);
+	double label=1; //au hasard
+	vector<double> input;
+	input.push_back(1);input.push_back(1);input.push_back(1);
+	nono.printNetworkInfo();
+	
+	vector<double> expectedOutput;expectedOutput.push_back(label);
+	vector<double> actualOutput;
+	actualOutput = nono.calculOutput(input);
+	
+	nono.trainNNetwork(input, expectedOutput, QUADRATICCOST, 1.f);
+	
+	nono.printNetworkInfo();
+}
+
+//Mini test de training
+void testMiniTraining2()
+{
+	vector<int> sizeLayers;
+	sizeLayers.push_back(9);
+	sizeLayers.push_back(5);
+	sizeLayers.push_back(10);
+	
+	NNetwork nono(sizeLayers, 1.0);
+	double label=0;
+	vector<double> image;
+	image.push_back(1);image.push_back(1);image.push_back(1);
+	image.push_back(1);image.push_back(0);image.push_back(1);
+	image.push_back(1);image.push_back(1);image.push_back(1);
+	nono.printNetworkInfo();
+	
+	vector<double> expectedOutput;
+	vector<double> actualOutput;
+	label2MNISTExpectedOutput(label, expectedOutput);
+	actualOutput = nono.calculOutput(image);
+	
+	nono.trainNNetwork(image, expectedOutput, QUADRATICCOST, 1.f);
+	
+	nono.printNetworkInfo();
+}
+
+//DONT WORK
+//Avec juste la première image pour test matlab
 void testMNISTTraining()
+{
+	vector<int> sizeLayers;
+	sizeLayers.push_back(784);
+	sizeLayers.push_back(15);
+	sizeLayers.push_back(10);
+	
+	NNetwork nono(sizeLayers, 1.0);
+	vector<double> labels;
+	ReadMNISTTrainingLabels(60000,labels);
+	vector<vector<double>> images;
+	ReadMNISTTrainingImages(60000,784,images);
+	
+	ofstream objetfichier;
+	objetfichier.open("testMNISTTraining", ios::out | ios::trunc); 
+	
+	cout << "image : " << endl;
+	objetfichier << "image : " << endl;
+	for(unsigned int j=0; j<images.at(0).size(); j++) {
+		objetfichier << images.at(0).at(j) << endl;
+		cout << images.at(0).at(j) << endl;
+	}
+	cout << "label : " << endl << labels.at(0) << endl;
+	objetfichier << "label : " << endl << labels.at(0) << endl;
+	
+	objetfichier.close();
+	
+	vector<double> expectedOutput;
+	vector<double> actualOutput;
+	label2MNISTExpectedOutput(labels.at(0), expectedOutput);
+	actualOutput = nono.calculOutput(images.at(0));
+	
+	nono.trainNNetwork(images.at(0), expectedOutput, QUADRATICCOST, 1.f);
+}
+
+
+// DONT WORK
+void testMNISTTraining2()
 {
 	vector<int> sizeLayers;
 	sizeLayers.push_back(784);
@@ -296,26 +385,18 @@ void testMNISTTraining()
 		label2MNISTExpectedOutput(minibatchlabels, expectedOutput);
 		nono.trainNNetwork(minibatchimages, expectedOutput, QUADRATICCOST, 1.f);
 		actualOutput = nono.calculOutput(minibatchimages);
-		//~ cout << "labels result: " << endl;
-		//~ for(int i=0; i<expectedOutput.size(); i++) {
-			//~ for(int j=0; j<expectedOutput.at(i).size(); j++) {
-				//~ cout << expectedOutput.at(i).at(j) << " ";
-			//~ }
-		//~ }
-		//~ vector<int> max_indice=0;
-		//~ for(unsigned int i=0; i<ActualOutput.size(); i++) {
-			//~ cout << output.at(i) << endl;
-			//~ if (output.at(i)>output.at(max_indice)) {
-				//~ max_indice = i;
-			//~ }
-		//~ }
-		//~ cout<<"Value: "<<max_indice<<endl;
-		
+		vector<double> actualLabels;
+		outputToLabels(actualLabels, actualOutput);
+		for(unsigned int i=0; i<minibatchlabels.size(); i++) {
+			cout << "label expected : " << minibatchlabels.at(i);
+			cout << " actual label : " << actualLabels.at(i);
+			cout << endl;
+		}
 	}
 }
 
 //Programme principal
 int main(int argc, char* argv[]) {
-	testMNISTTraining();
+	testMiniTraining();
 	return 0;
 }

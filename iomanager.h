@@ -41,4 +41,8 @@ void label2MNISTExpectedOutput(double &label, vector<double> &expectedOutput);
 
 void label2MNISTExpectedOutput(vector<double> &labels, vector<vector<double>> &expectedOutputs);
 
+void outputToLabel(double &label, vector<double> &output);
+
+void outputToLabels(vector<double> &labels, vector<vector<double>> &outputs);
+
 #endif

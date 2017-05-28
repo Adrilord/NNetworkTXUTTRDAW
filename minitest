@@ -1,0 +1,94 @@
+Layer n° 0
+nben : 3 nbout : 3
+weight values :
+[1 0 0; 
+0 1 0; 
+0 0 1]
+bias values :
+[0;
+0;
+0]
+functionID values :
+[0;
+0;
+0]
+functionParameters values :
+Layer n° 1
+nben : 3 nbout : 4
+weight values :
+[0.133919 -0.088101 1.67441; 
+0.733641 0.997525 -1.2775;
+-2.39672 -0.67928 -0.0390913; 
+0.893556 -0.0176478 -1.29656]
+bias values :
+[-0.667981;
+0.181709;
+0.831051;
+-0.548248]
+functionID values :
+[1;
+1;
+1;
+1]
+functionParameters values :
+Layer n° 2
+nben : 4 nbout : 1
+weight values :
+[0.133919 -0.088101 1.67441 0.733641]
+bias values :
+0.997525
+functionID values :
+1
+functionParameters values :
+test
+test errors
+error n°0 : 0.00859197
+error n°0 : [0.000287656
+error n°1 : -0.00018924
+error n°2 : 0.00359662]
+error n°3 : 0.00157586
+error n°0 : -9.50903e-319
+error n°1 : -3.49166e-319
+error n°2 : -0
+Layer n° 0
+nben : 3 nbout : 3
+weight values :
+[1 0 0; 
+0 1 0;
+0 0 1]
+bias values :
+[0;
+0;
+0]
+functionID values :
+[0;
+0;
+0]
+functionParameters values :
+Layer n° 1
+nben : 3 nbout : 4
+weight values :
+[0.133631 -0.0883886 1.67412; 
+0.73383 0.997714 -1.27731;
+-2.40031 -0.682877 -0.0426879;
+0.89198 -0.0192237 -1.29813]
+bias values :
+-0.668268
+0.181898
+0.827454
+-0.549824
+functionID values :
+[1;
+1;
+1;
+1]
+functionParameters values :
+Layer n° 2
+nben : 4 nbout : 1
+weight values :
+[0.133919 -0.088101 1.67441 0.733641 ]
+bias values :
+0.997525
+functionID values :
+1
+functionParameters values :

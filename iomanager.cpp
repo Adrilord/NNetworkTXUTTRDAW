@@ -138,15 +138,24 @@ void label2MNISTExpectedOutput(vector<double> &labels, vector<vector<double>> &e
 	}
 }
 
-//~ void outputToLabel(vector<double> &labels, vector<vector<double>> &expectedOutputs)
-//~ {
-	//~ for(unsigned int i=0; i<labels.size(); i++) {
-		//~ vector<double> expectedOutput;
-		//~ for(int j=0; j<10; j++) {
-			//~ expectedOutput.push_back(0);
-		//~ }
-		//~ expectedOutput.at(labels.at(i))=1.f;
-		//~ expectedOutputs.push_back(expectedOutput);
-	//~ }
-//~ }
-	
+void outputToLabel(double &label, vector<double> &output)
+{
+	label=0;
+	for(unsigned int i=0; i<output.size(); i++) {
+		if (output.at(i)>output.at(label)) {
+			label = i;
+		}
+	}
+}
+
+void outputToLabels(vector<double> &labels, vector<vector<double>> &outputs)
+{
+	for(unsigned int i=0; i<outputs.size(); i++) {
+		labels.push_back(0);
+		for(unsigned int j=0; j<outputs.at(i).size(); j++) {
+			if (outputs.at(i).at(j)>outputs.at(i).at(labels.at(i))) {
+				labels.at(i) = j;
+			}
+		}	
+	}
+}

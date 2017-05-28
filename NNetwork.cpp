@@ -122,6 +122,7 @@ void NNetwork::trainNNetwork(vector<double> input, vector<double> expectedOutput
 		this->Layers.at(i).calculDerivateOutput(preOutputs[i], derivateOutputs[i]);
 		this->Layers.at(i+1).calculPreOutput(outputs[i], preOutputs[i+1]);
 	}
+	cout << "test" << endl;
 	unsigned int i=this->Layers.size()-1;
 	this->Layers.at(i).calculOutput(preOutputs[i], outputs[i], outputs[i-1]);
 	this->Layers.at(i).calculDerivateOutput(preOutputs[i], derivateOutputs[i]);
@@ -132,14 +133,21 @@ void NNetwork::trainNNetwork(vector<double> input, vector<double> expectedOutput
 	errors[this->Layers.size()-1] = this->calculCostDerivate(outputs[this->Layers.size()-1], gslExpectedOutput, costID);
 	gsl_vector_mul(errors[this->Layers.size()-1], derivateOutputs[this->Layers.size()-1]);
 	//Backpropagation of the error
-	for(int l=this->Layers.size()-1; l>-1; l--) {
+	for(int l=this->Layers.size()-2; l>-1; l--) {
 		errors[l] = gsl_vector_alloc(this->Layers.at(l).getNbOut());
 		this->Layers.at(l+1).calculDelta(errors[l], errors[l+1]);
 		gsl_vector_mul(errors[l], derivateOutputs[l]);
 	}
+	//TEST
+	cout << "test errors" << endl;
+	for(int l=this->Layers.size()-1; l>-1; l--) {
+		for(int k=0; k<this->Layers.at(l).getNbOut(); k++) {
+			cout << "error n°" << k << " : " << gsl_vector_get(errors[l], k) << endl;
+		}
+	}
 	//GRADIENT DESCENT (CORRECTIONS)
 	int l=this->Layers.size()-1;
-	while(l>1) {
+	while(l>0) {
 		l--;
 		//corretionWeights=learningRate*errors[l]*trans(outputs[l-1])
 		gsl_matrix* correctionWeights = gsl_matrix_alloc(errors[l]->size, outputs[l-1]->size);
@@ -155,6 +163,7 @@ void NNetwork::trainNNetwork(vector<double> input, vector<double> expectedOutput
 		//DESTRUCTION
 		gsl_matrix_free(correctionWeights);
 		gsl_vector_free(correctionBias);
+		l=l-1; // bug avec for
 	}
 	
 	//DESTRUCTION

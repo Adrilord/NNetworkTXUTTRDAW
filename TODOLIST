@@ -12,5 +12,5 @@ vector<vector<double>> to bmp -> we will see
 permettre la lecture d'un fichier MNIST d'apprentissage (images ET labels) -->  done
 documentation --> in constant progress
 gestion des mini-batch --> done
-output2Label --> ...
+output2Label --> done
 correction training --> in progress
