@@ -41,6 +41,7 @@ NNetwork xmlToNNetwork(string xmlfilename) {
 			return NNetwork(layers);
 		}
 		
+		//On remplie progressivement le tableau de Layer
 		Layer layerToPush = xmlToLayer(neurElem, nben, layerTypeID, nbout);
 		layers.push_back(layerToPush);
 		layerElem->QueryIntAttribute("nbneurons", &nben); // on détermine le nben à partir du layer précédent

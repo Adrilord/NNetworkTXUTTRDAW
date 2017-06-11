@@ -30,8 +30,12 @@ void putOutputToFile(string filename, vector<vector<double>> outputs);
 //Passe une valeur 32bit de BSM à MSB (ATTENTION il faudrait utiliser uint32_t)
 int ReverseInt (int i);
 
+//Lit le fichier d'images d'entrainement de MNIST pour l'obtenir 
+// "au format" vector<vector<double>> exploitable
 void ReadMNISTTrainingImages(int NumberOfImages, int DataOfAnImage,vector<vector<double>> &arr);
 
+//Lit le fichier des labels d'entrainement de MNIST pour l'obtenir 
+// "au format" vector<double> exploitable
 void ReadMNISTTrainingLabels(int NumberOfItems, vector<double> &arr);
 
 void extractingAMNISTMiniBatch(vector<vector<double>> &images, vector<double> &labels, 

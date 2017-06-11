@@ -49,6 +49,7 @@ class Layer {
 		//où input intervient dans les réseaux RBF notamment
 		void calculOutput(gsl_vector* preOutput, gsl_vector* output, gsl_vector* input);
 		void calculOutput(gsl_matrix* preOutput, gsl_matrix* output, gsl_matrix* input); // plusieurs inputs à la fois
+		
 		void calculDerivateOutput(gsl_vector* preOutput, gsl_vector* output);  // for the backpropagation algorithm
 		void calculDerivateOutput(gsl_matrix* preOutput, gsl_matrix* output);  // for the backpropagation algorithm
 		

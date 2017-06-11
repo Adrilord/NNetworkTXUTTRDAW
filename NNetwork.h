@@ -27,9 +27,10 @@ class NNetwork {
 		vector<Layer> Layers; //couches (input et output comprises)
 		
 	public :
-		//Constructeur de la classe
+		//Constructeur de la classe "classique"
 		NNetwork(vector<Layer> Layers);
-		NNetwork(vector<int>& sizeLayers, double sigma); //avec SIGMOID et génération aléa
+		//construction avec SIGMOID comme fonciton de neurone et génération aléatoire des poids
+		NNetwork(vector<int>& sizeLayers, double sigma);
 		
 		//Destructeur
 		~NNetwork();

@@ -23,7 +23,7 @@ void showGslVector(gsl_vector* gslVector)
  * les fonctionnalités du programme
  */
 
-void testLayer () 
+void testLayer() 
 {
 	int nben=10;
 	int nbout=5;

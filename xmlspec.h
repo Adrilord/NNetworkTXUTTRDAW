@@ -11,8 +11,8 @@ nbneurons=”1”,”2”...
 
 functionid="0","1","2","3"... //pour bosser plus vite sur les comparaisons
 functionparameters="4 3" //pour des fonctions à paramètres
-bias=”[value]” (ou valeur aléatoire)
-weights=”[value0] [value1] … [value[nbneurons]]” // (attention à avoir le bon nombre) (ou valeur aléatoire)
+bias=”(value)” (ou valeur aléatoire)
+weights=”(value0) (value1) … (value(nbneurons)” // (attention à avoir le bon nombre) (ou valeur aléatoire)
 */
 
 //Association de chaque ID de fonction à un nom de préprocessing
