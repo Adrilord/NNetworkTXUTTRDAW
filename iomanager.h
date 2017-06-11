@@ -38,15 +38,15 @@ void ReadMNISTTrainingImages(int NumberOfImages, int DataOfAnImage,vector<vector
 // "au format" vector<double> exploitable
 void ReadMNISTTrainingLabels(int NumberOfItems, vector<double> &arr);
 
+//Permet d'extraire un mini-batch avec une sélection aléatoire de batchsize
+//items
 void extractingAMNISTMiniBatch(vector<vector<double> > &images, vector<double> &labels, 
 	vector<vector<double> > &minibatchimages, vector<double> &minibatchlabels, unsigned int batchsize);
-	
+
+//Fonctions d'exploitation des labels (lien entre label et résultat attendu)
 void label2MNISTExpectedOutput(double &label, vector<double> &expectedOutput);
-
 void label2MNISTExpectedOutput(vector<double> &labels, vector<vector<double> > &expectedOutputs);
-
 void outputToLabel(double &label, vector<double> &output);
-
 void outputToLabels(vector<double> &labels, vector<vector<double> > &outputs);
 
 #endif
