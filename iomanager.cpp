@@ -19,7 +19,7 @@ vector<vector<double> > getInputsFromFile(string filename)
 	return inputs;
 }
 
-void putOutputToFile(const char* filename, vector<vector<double> > outputs)
+void putOutputToFile(string filename, vector<vector<double> > outputs)
 {
 	ofstream fichier;
 	fichier.open(filename, ios::out | ios::trunc); //on ouvre le fichier en ecriture
