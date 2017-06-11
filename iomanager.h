@@ -23,7 +23,7 @@
 vector<vector<double> > getInputsFromFile(string filename);
 
 //Fonction qui écrit les valeurs d'un vector<vector<double> > dans fichier
-void putOutputToFile(string filename, vector<vector<double> > outputs);
+void putOutputToFile(const char* filename, vector<vector<double> > outputs);
 
 //Fonctions pour la lecture d'un fichier MNIST de test
 
