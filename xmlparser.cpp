@@ -1,6 +1,6 @@
 #include "xmlparser.h"
 
-NNetwork xmlToNNetwork(string xmlfilename) {
+NNetwork xmlToNNetwork(const char*  xmlfilename) {
 	//layers to fill
 	vector<Layer> layers;
 
@@ -103,7 +103,7 @@ vector<double> decodeListOfDouble(string values)
     return finalValues;
 }
 
-void saveNetwork(NNetwork& network, string xmlfilename) 
+void saveNetwork(NNetwork& network, const char* xmlfilename) 
 {
 	//Création du fichier s'il n'existe pas (!!ne supprime rien!!)
 	//Mise en place des balises initiales
