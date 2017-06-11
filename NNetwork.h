@@ -39,11 +39,11 @@ class NNetwork {
 		//pour 1 input
 		vector<double> calculOutput(vector<double> input);
 		//pour plusieurs inputs
-		vector<vector<double>> calculOutput(vector<vector<double>> input);
+		vector<vector<double> > calculOutput(vector<vector<double> > input);
 		
 		//Fonctions pour l'apprentissages implémentant l'algorithme de rétropropagation d'erreurs
 		void trainNNetwork(vector<double> input, vector<double> expectedOutput, int costID, const double learningRate);
-		void trainNNetwork(vector<vector<double>> input, vector<vector<double>> expectedOutput, int costID, const double learningRate);
+		void trainNNetwork(vector<vector<double> > input, vector<vector<double> > expectedOutput, int costID, const double learningRate);
 		
 		//Fonctions pour calculer le gradient du coût (pour l'apprentissage) 
 		//pour les variables de sorties

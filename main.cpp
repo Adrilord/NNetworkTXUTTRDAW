@@ -107,7 +107,7 @@ void testForwardingMatrix()
 	nono.printNetworkInfo();
 	
 	//Construction de l'input
-	vector<vector<double>> input;
+	vector<vector<double> > input;
 	vector<double> input1;
 	vector<double> input2;
 	input1.push_back(4);
@@ -118,7 +118,7 @@ void testForwardingMatrix()
 	input.push_back(input2);
 
 	//Calcul et test de l'output
-	vector<vector<double>> output=nono.calculOutput(input);
+	vector<vector<double> > output=nono.calculOutput(input);
 	for(unsigned int j=0; j<output.size(); j++) {
 		cout << "OUTPUT" << endl;
 		for(unsigned int k=0; k<output.at(j).size(); k++) {
@@ -135,7 +135,7 @@ void testForwardingMatrixFromFile()
 	nono.printNetworkInfo();
 	
 	//Construction de l'input
-	vector<vector<double>> inputs(getInputsFromFile("testInputFile"));
+	vector<vector<double> > inputs(getInputsFromFile("testInputFile"));
 	for(unsigned int j=0; j<inputs.size(); j++) {
 		cout << "INPUT" << endl;
 		for(unsigned int k=0; k<inputs.at(j).size(); k++) {
@@ -146,7 +146,7 @@ void testForwardingMatrixFromFile()
 
 
 	//Calcul et test de l'output
-	vector<vector<double>> output=nono.calculOutput(inputs);
+	vector<vector<double> > output=nono.calculOutput(inputs);
 	for(unsigned int j=0; j<output.size(); j++) {
 		cout << "OUTPUT" << endl;
 		for(unsigned int k=0; k<output.at(j).size(); k++) {
@@ -163,17 +163,17 @@ void testOutputInFile()
 	nono.printNetworkInfo();
 	
 	//Construction de l'input
-	vector<vector<double>> inputs(getInputsFromFile("testInputFile"));
+	vector<vector<double> > inputs(getInputsFromFile("testInputFile"));
 	
 	//Construction de l'output
-	vector<vector<double>> outputs=nono.calculOutput(inputs);
+	vector<vector<double> > outputs=nono.calculOutput(inputs);
 	
 	putOutputToFile("testOutputFile", outputs);
 }
 
 void testMNISTreader()
 {
-  vector<vector<double>> ar;
+  vector<vector<double> > ar;
   ReadMNISTTrainingImages(60000,784,ar);
   cout << "test size :" << ar.at(0).size() << endl;
 	for(unsigned int i=0; i<10; i++) {
@@ -216,7 +216,7 @@ void testMNISTNetwork()
 	
 	NNetwork nono(sizeLayers, 1.0);
 	
-	vector<vector<double>> ar;
+	vector<vector<double> > ar;
 	ReadMNISTTrainingImages(60000,784,ar);
 	vector<double> input;
 	for(unsigned int i=0; i<1; i++) {
@@ -252,11 +252,11 @@ void testBatch()
 {
 	vector<double> labels;
 	ReadMNISTTrainingLabels(60000,labels);
-	vector<vector<double>> images;
+	vector<vector<double> > images;
 	ReadMNISTTrainingImages(60000,784,images);
 	
 	vector<double> minibatchlabels;
-	vector<vector<double>> minibatchimages;
+	vector<vector<double> > minibatchimages;
 	
 	extractingAMNISTMiniBatch(images, labels, minibatchimages, minibatchlabels, 10);
 	
@@ -332,7 +332,7 @@ void testMNISTTraining()
 	NNetwork nono(sizeLayers, 1.0);
 	vector<double> labels;
 	ReadMNISTTrainingLabels(60000,labels);
-	vector<vector<double>> images;
+	vector<vector<double> > images;
 	ReadMNISTTrainingImages(60000,784,images);
 	
 	ofstream objetfichier;
@@ -370,7 +370,7 @@ void testMNISTTraining2()
 	
 	vector<double> labels;
 	ReadMNISTTrainingLabels(60000,labels);
-	vector<vector<double>> images;
+	vector<vector<double> > images;
 	ReadMNISTTrainingImages(60000,784,images);
 	
 	unsigned int sizeMiniBatch = 10;
@@ -378,9 +378,9 @@ void testMNISTTraining2()
 	while(images.size() > sizeMiniBatch)
 	{
 		vector<double> minibatchlabels;
-		vector<vector<double>> expectedOutput;
-		vector<vector<double>> actualOutput;
-		vector<vector<double>> minibatchimages;
+		vector<vector<double> > expectedOutput;
+		vector<vector<double> > actualOutput;
+		vector<vector<double> > minibatchimages;
 		extractingAMNISTMiniBatch(images, labels, minibatchimages, minibatchlabels, 10);
 		label2MNISTExpectedOutput(minibatchlabels, expectedOutput);
 		nono.trainNNetwork(minibatchimages, expectedOutput, QUADRATICCOST, 1.f);

@@ -8,7 +8,7 @@ RBF with matrices --> done (mais à tester)
 commencer la partie apprentissage (trainNetwork avec gsl_vector) --> done (to check)
 testMNISTNetworkIni -> done
 trainNetwork avec gsl_matrix -> done (to check)
-vector<vector<double>> to bmp -> we will see
+vector<vector<double> > to bmp -> we will see
 permettre la lecture d'un fichier MNIST d'apprentissage (images ET labels) -->  done
 documentation --> in constant progress
 gestion des mini-batch --> done

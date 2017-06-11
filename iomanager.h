@@ -19,11 +19,11 @@
 
 /*Fonction qui lit un fichier texte avec des valeurs séparés par un
  * espace et des retour \n, une ligne correspondant à un input
- * et qui retourne ces valeurs sour le format vector<vector<double>> */
-vector<vector<double>> getInputsFromFile(string filename);
+ * et qui retourne ces valeurs sour le format vector<vector<double> > */
+vector<vector<double> > getInputsFromFile(string filename);
 
-//Fonction qui écrit les valeurs d'un vector<vector<double>> dans fichier
-void putOutputToFile(string filename, vector<vector<double>> outputs);
+//Fonction qui écrit les valeurs d'un vector<vector<double> > dans fichier
+void putOutputToFile(string filename, vector<vector<double> > outputs);
 
 //Fonctions pour la lecture d'un fichier MNIST de test
 
@@ -31,22 +31,22 @@ void putOutputToFile(string filename, vector<vector<double>> outputs);
 int ReverseInt (int i);
 
 //Lit le fichier d'images d'entrainement de MNIST pour l'obtenir 
-// "au format" vector<vector<double>> exploitable
-void ReadMNISTTrainingImages(int NumberOfImages, int DataOfAnImage,vector<vector<double>> &arr);
+// "au format" vector<vector<double> > exploitable
+void ReadMNISTTrainingImages(int NumberOfImages, int DataOfAnImage,vector<vector<double> > &arr);
 
 //Lit le fichier des labels d'entrainement de MNIST pour l'obtenir 
 // "au format" vector<double> exploitable
 void ReadMNISTTrainingLabels(int NumberOfItems, vector<double> &arr);
 
-void extractingAMNISTMiniBatch(vector<vector<double>> &images, vector<double> &labels, 
-	vector<vector<double>> &minibatchimages, vector<double> &minibatchlabels, unsigned int batchsize);
+void extractingAMNISTMiniBatch(vector<vector<double> > &images, vector<double> &labels, 
+	vector<vector<double> > &minibatchimages, vector<double> &minibatchlabels, unsigned int batchsize);
 	
 void label2MNISTExpectedOutput(double &label, vector<double> &expectedOutput);
 
-void label2MNISTExpectedOutput(vector<double> &labels, vector<vector<double>> &expectedOutputs);
+void label2MNISTExpectedOutput(vector<double> &labels, vector<vector<double> > &expectedOutputs);
 
 void outputToLabel(double &label, vector<double> &output);
 
-void outputToLabels(vector<double> &labels, vector<vector<double>> &outputs);
+void outputToLabels(vector<double> &labels, vector<vector<double> > &outputs);
 
 #endif

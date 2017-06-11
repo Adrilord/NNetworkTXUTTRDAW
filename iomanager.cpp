@@ -1,8 +1,8 @@
 #include "iomanager.h"
 
-vector<vector<double>> getInputsFromFile(string filename)
+vector<vector<double> > getInputsFromFile(string filename)
 {
-	vector<vector<double>> inputs;
+	vector<vector<double> > inputs;
 	ifstream fichier(filename);
 	if (!fichier.bad()) { //permet de tester si le fichier s'est ouvert sans probleme
 		string lign;
@@ -19,7 +19,7 @@ vector<vector<double>> getInputsFromFile(string filename)
 	return inputs;
 }
 
-void putOutputToFile(string filename, vector<vector<double>> outputs)
+void putOutputToFile(string filename, vector<vector<double> > outputs)
 {
 	ofstream fichier;
 	fichier.open(filename, ios::out | ios::trunc); //on ouvre le fichier en ecriture
@@ -46,7 +46,7 @@ int ReverseInt (int i)
     return((int)ch1<<24)+((int)ch2<<16)+((int)ch3<<8)+ch4;
 }
 
-void ReadMNISTTrainingImages(int NumberOfImages, int DataOfAnImage,vector<vector<double>> &arr)
+void ReadMNISTTrainingImages(int NumberOfImages, int DataOfAnImage,vector<vector<double> > &arr)
 {
     arr.resize(NumberOfImages,vector<double>(DataOfAnImage));
     ifstream file("train-images.idx3-ubyte",ios::binary);
@@ -100,8 +100,8 @@ void ReadMNISTTrainingLabels(int NumberOfItems, vector<double> &arr)
     }
 }
 
-void extractingAMNISTMiniBatch(vector<vector<double>> &images, vector<double> &labels, 
-	vector<vector<double>> &minibatchimages, vector<double> &minibatchlabels, unsigned int batchsize)
+void extractingAMNISTMiniBatch(vector<vector<double> > &images, vector<double> &labels, 
+	vector<vector<double> > &minibatchimages, vector<double> &minibatchlabels, unsigned int batchsize)
 {	
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
@@ -126,7 +126,7 @@ void label2MNISTExpectedOutput(double &label, vector<double> &expectedOutput)
 	expectedOutput.at(label)=1.f;
 }
 
-void label2MNISTExpectedOutput(vector<double> &labels, vector<vector<double>> &expectedOutputs)
+void label2MNISTExpectedOutput(vector<double> &labels, vector<vector<double> > &expectedOutputs)
 {
 	for(unsigned int i=0; i<labels.size(); i++) {
 		vector<double> expectedOutput;
@@ -148,7 +148,7 @@ void outputToLabel(double &label, vector<double> &output)
 	}
 }
 
-void outputToLabels(vector<double> &labels, vector<vector<double>> &outputs)
+void outputToLabels(vector<double> &labels, vector<vector<double> > &outputs)
 {
 	for(unsigned int i=0; i<outputs.size(); i++) {
 		labels.push_back(0);

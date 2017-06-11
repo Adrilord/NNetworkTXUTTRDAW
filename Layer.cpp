@@ -1,6 +1,6 @@
 #include "Layer.h"
 
-Layer::Layer(int& nben, int& nbout, vector<vector<double>>& weights, vector<double>& bias, vector<int>& functionsID, vector<vector<double>>& functionsParam)
+Layer::Layer(int& nben, int& nbout, vector<vector<double> >& weights, vector<double>& bias, vector<int>& functionsID, vector<vector<double> >& functionsParam)
 {
 	this->nben=nben;
 	this->nbout=nbout;
@@ -10,7 +10,7 @@ Layer::Layer(int& nben, int& nbout, vector<vector<double>>& weights, vector<doub
 	this->functionsParam=functionsParam;
 }
 
-Layer::Layer(int& nben, int& nbout, vector<vector<double>>& weights, vector<double>& bias)
+Layer::Layer(int& nben, int& nbout, vector<vector<double> >& weights, vector<double>& bias)
 { //with simple sigmoïd functions
 	this->nben=nben;
 	this->nbout=nbout;
@@ -21,7 +21,7 @@ Layer::Layer(int& nben, int& nbout, vector<vector<double>>& weights, vector<doub
 	}
 }
 
-Layer::Layer(int& nben, int& nbout, bool randomizeGaussian, double sigma, vector<int>& functionsID, vector<vector<double>>& functionsParam) 
+Layer::Layer(int& nben, int& nbout, bool randomizeGaussian, double sigma, vector<int>& functionsID, vector<vector<double> >& functionsParam) 
 {
 	this->nben=nben;
 	this->nbout=nbout;
@@ -265,7 +265,7 @@ vector<double> Layer::getBias()
 	return gslToStdVector(this->bias);
 }
 
-vector<vector<double>> Layer::getWeights()
+vector<vector<double> > Layer::getWeights()
 {
 	return gslToStdMatrix(this->weights);
 }
@@ -275,7 +275,7 @@ vector<int> Layer::getFunctionsID()
 	return this->functionsID;
 }
 
-vector<vector<double>> Layer::getFunctionsParam()
+vector<vector<double> > Layer::getFunctionsParam()
 {
 	return this->functionsParam;
 }
@@ -338,7 +338,7 @@ gsl_vector* stdToGslVector(vector<double>& stdVector)
 	return gslvector;
 }
 
-gsl_matrix* stdToGslMatrix(vector<vector<double>>& stdMatrix) //les vector sont en ligne
+gsl_matrix* stdToGslMatrix(vector<vector<double> >& stdMatrix) //les vector sont en ligne
 {
 	gsl_matrix* gslmatrix = gsl_matrix_alloc (stdMatrix.size(), stdMatrix.at(0).size());
 	for(unsigned int j=0; j<stdMatrix.size(); j++) {
@@ -349,7 +349,7 @@ gsl_matrix* stdToGslMatrix(vector<vector<double>>& stdMatrix) //les vector sont 
 	return gslmatrix;
 }
 
-gsl_matrix* stdToGslMatrixTrans(vector<vector<double>>& stdMatrix) //les vector sont en colonnes
+gsl_matrix* stdToGslMatrixTrans(vector<vector<double> >& stdMatrix) //les vector sont en colonnes
 {
 	gsl_matrix* gslmatrix = gsl_matrix_alloc (stdMatrix.at(0).size(), stdMatrix.size());
 	for(unsigned int k=0; k<stdMatrix.size(); k++) {
@@ -370,9 +370,9 @@ vector<double> gslToStdVector(gsl_vector* gslvector)
 	return stdVector;
 }
 
-vector<vector<double>> gslToStdMatrix(gsl_matrix* gslmatrix) //les vector sont en lignes
+vector<vector<double> > gslToStdMatrix(gsl_matrix* gslmatrix) //les vector sont en lignes
 {
-	vector<vector<double>> stdMatrix;
+	vector<vector<double> > stdMatrix;
 	for(unsigned int j=0; j<gslmatrix->size1; j++) {
 		vector<double> lign;
 		for(unsigned int k=0; k<gslmatrix->size2; k++) {
@@ -383,9 +383,9 @@ vector<vector<double>> gslToStdMatrix(gsl_matrix* gslmatrix) //les vector sont e
 	return stdMatrix;
 }
 
-vector<vector<double>> gslToStdMatrixTrans(gsl_matrix* gslmatrix) //les vector sont en colonnes
+vector<vector<double> > gslToStdMatrixTrans(gsl_matrix* gslmatrix) //les vector sont en colonnes
 {
-	vector<vector<double>> stdMatrix;
+	vector<vector<double> > stdMatrix;
 	for(unsigned int k=0; k<gslmatrix->size2; k++) {
 		vector<double> column;
 		for(unsigned int j=0; j<gslmatrix->size1; j++) {

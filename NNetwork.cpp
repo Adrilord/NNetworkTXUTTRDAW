@@ -60,7 +60,7 @@ vector<double> NNetwork::calculOutput(vector<double> input)
 	return stdOutput;		
 }
 
-vector<vector<double>> NNetwork::calculOutput(vector<vector<double>> input)
+vector<vector<double> > NNetwork::calculOutput(vector<vector<double> > input)
 {
 	//CREATION
 	gsl_matrix* gslInput = stdToGslMatrixTrans(input);  
@@ -79,7 +79,7 @@ vector<vector<double>> NNetwork::calculOutput(vector<vector<double>> input)
 	}
 	unsigned int i=this->Layers.size()-1;
 	this->Layers.at(i).calculOutput(preOutputs[i], outputs[i], outputs[i-1]);
-	vector<vector<double>> stdOutput = gslToStdMatrix(outputs[i]);  
+	vector<vector<double> > stdOutput = gslToStdMatrix(outputs[i]);  
 	//TEST (marche)
 	//~ cout << "OUTPUTs" << endl;
 	//~ for(unsigned int i=0; i<this->Layers.size(); i++) {
@@ -177,7 +177,7 @@ void NNetwork::trainNNetwork(vector<double> input, vector<double> expectedOutput
 	}
 }
 
-void NNetwork::trainNNetwork(vector<vector<double>> input, vector<vector<double>> expectedOutput, int costID, const double learningRate)
+void NNetwork::trainNNetwork(vector<vector<double> > input, vector<vector<double> > expectedOutput, int costID, const double learningRate)
 {
 	//CREATION
 	gsl_matrix* gslInput = stdToGslMatrixTrans(input); 
@@ -202,7 +202,7 @@ void NNetwork::trainNNetwork(vector<vector<double>> input, vector<vector<double>
 	unsigned int i=this->Layers.size()-1;
 	this->Layers.at(i).calculOutput(preOutputs[i], outputs[i], outputs[i-1]);
 	this->Layers.at(i).calculDerivateOutput(preOutputs[i], derivateOutputs[i]);
-	vector<vector<double>> stdOutput = gslToStdMatrixTrans(outputs[i]);  
+	vector<vector<double> > stdOutput = gslToStdMatrixTrans(outputs[i]);  
 	//BACKPROPAGATION -> ERRORS
 	gsl_matrix* errors[this->Layers.size()];
 	//Output error

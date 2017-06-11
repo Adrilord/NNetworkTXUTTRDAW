@@ -59,9 +59,9 @@ Layer xmlToLayer(TiXmlElement* neurElem, int nben, int layerTypeID, int nbout)
 	} else {
 		//valeurs à lire
 		vector<double> bias;
-		vector<vector<double>> weights;
+		vector<vector<double> > weights;
 		vector<int> functionsID;
-		vector<vector<double>> functionsParam;
+		vector<vector<double> > functionsParam;
 
 		while(neurElem) {
 			//décodages simples
