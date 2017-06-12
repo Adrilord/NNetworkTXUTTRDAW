@@ -18,7 +18,7 @@ using namespace std;
 
 //Fonction qui à partir du fichier xml génère le réseau de neurones
 //celui-ci selon la spécification donnée dans xmlspec.h
-NNetwork xmlToNNetwork(const char*  xmlfilename);
+NNetwork xmlToNNetwork(string  xmlfilename);
 
 //Fonction qui à partir d'un élement xml de Layer, génère une couche
 Layer xmlToLayer(TiXmlElement* firstNeuronElem, int nben, int layerTypeID, int nbout);

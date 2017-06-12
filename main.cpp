@@ -100,6 +100,7 @@ void testSaveNetwork()
 	saveNetwork(nono, "savetestxml.xml");
 }
 
+//Ce test de Forwarding avec Matrix a été vérifié avec Matlab
 void testForwardingMatrix()
 {
 	//Création et test du NNetwork
@@ -395,8 +396,45 @@ void testMNISTTraining2()
 	}
 }
 
+void demonstrationFromTrainedNetwork(string xmlfilename) {
+	NNetwork nono = xmlToNNetwork(xmlfilename);
+	cout << xmlfilename << endl;
+	//~ nono.printNetworkInfo();
+	
+	vector<double> labels;
+	ReadMNISTTrainingLabels(60000,labels);
+	vector<vector<double> > images;
+	ReadMNISTTrainingImages(60000,784,images);
+	
+	vector<double> minibatchlabels;
+	vector<vector<double> > expectedOutput;
+	vector<vector<double> > actualOutput;
+	vector<vector<double> > minibatchimages;
+	extractingAMNISTMiniBatch(images, labels, minibatchimages, minibatchlabels, 10);
+	label2MNISTExpectedOutput(minibatchlabels, expectedOutput);
+	nono.trainNNetwork(minibatchimages, expectedOutput, QUADRATICCOST, 1.f);
+	actualOutput = nono.calculOutput(minibatchimages);
+	vector<double> actualLabels;
+	outputToLabels(actualLabels, actualOutput);
+	for(unsigned int i=0; i<minibatchlabels.size(); i++) {
+		cout << "label expected : " << minibatchlabels.at(i);
+		cout << " (";
+		for(unsigned int j=0; j<expectedOutput.size(); j++) {
+			cout << expectedOutput.at(i).at(j) << " " ;
+		}
+		cout << ") ";
+		cout << " actual label : " << actualLabels.at(i);
+		cout << " (";
+		for(unsigned int j=0; j<actualOutput.size(); j++) {
+			cout << actualOutput.at(i).at(j) << " " ;
+		}
+		cout << ") ";
+		cout << endl;
+	}
+}
+
 //Programme principal
 int main(int argc, char* argv[]) {
-	testMiniTraining();
+	demonstrationFromTrainedNetwork(argv[1]);
 	return 0;
 }

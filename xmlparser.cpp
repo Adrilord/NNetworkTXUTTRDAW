@@ -1,6 +1,6 @@
 #include "xmlparser.h"
 
-NNetwork xmlToNNetwork(const char*  xmlfilename) {
+NNetwork xmlToNNetwork(string  xmlfilename) {
 	//layers to fill
 	vector<Layer> layers;
 
