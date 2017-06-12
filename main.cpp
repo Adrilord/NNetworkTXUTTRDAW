@@ -396,10 +396,11 @@ void testMNISTTraining2()
 	}
 }
 
+//On lit un réseau entrainé et on teste un mini batch sur lui
 void demonstrationFromTrainedNetwork(string xmlfilename) {
 	NNetwork nono = xmlToNNetwork(xmlfilename);
 	cout << xmlfilename << endl;
-	//~ nono.printNetworkInfo();
+	//~ nono.printNetworkInfo(); // pour afficher les infos du NNetwork
 	
 	vector<double> labels;
 	ReadMNISTTrainingLabels(60000,labels);
@@ -412,23 +413,23 @@ void demonstrationFromTrainedNetwork(string xmlfilename) {
 	vector<vector<double> > minibatchimages;
 	extractingAMNISTMiniBatch(images, labels, minibatchimages, minibatchlabels, 10);
 	label2MNISTExpectedOutput(minibatchlabels, expectedOutput);
-	nono.trainNNetwork(minibatchimages, expectedOutput, QUADRATICCOST, 1.f);
 	actualOutput = nono.calculOutput(minibatchimages);
 	vector<double> actualLabels;
 	outputToLabels(actualLabels, actualOutput);
+	// les parties suivantes commentées correspondent à l'affichage des outputs
 	for(unsigned int i=0; i<minibatchlabels.size(); i++) {
 		cout << "label expected : " << minibatchlabels.at(i);
-		cout << " (";
-		for(unsigned int j=0; j<expectedOutput.size(); j++) {
-			cout << expectedOutput.at(i).at(j) << " " ;
-		}
-		cout << ") ";
+		//~ cout << " (";
+		//~ for(unsigned int j=0; j<expectedOutput.size(); j++) {
+			//~ cout << expectedOutput.at(i).at(j) << " " ;
+		//~ }
+		//~ cout << ") ";
 		cout << " actual label : " << actualLabels.at(i);
-		cout << " (";
-		for(unsigned int j=0; j<actualOutput.size(); j++) {
-			cout << actualOutput.at(i).at(j) << " " ;
-		}
-		cout << ") ";
+		//~ cout << " (";
+		//~ for(unsigned int j=0; j<actualOutput.size(); j++) {
+			//~ cout << actualOutput.at(i).at(j) << " " ;
+		//~ }
+		//~ cout << ") ";
 		cout << endl;
 	}
 }
